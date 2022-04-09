@@ -9,7 +9,7 @@
 namespace cmr_tests_utils {
 
 template<class ActionT>
-class BasicActionClientTest: public BasicNodeTest {
+class BasicActionClientTest {
   
   public:
   BasicActionClientTest(std::string client_node_name, std::string action_name, 

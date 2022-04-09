@@ -11,7 +11,7 @@ class BasicServiceClientTest {
   
   public:
 
-  BasicServiceClientTest(std::string client_node_name, std::string service_name, std::chrono::milliseconds service_timeout);
+  BasicServiceClientTest(std::string client_node_name, std::string service_name, unsigned int service_timeout_ms);
   bool is_service_ready();
   bool send_request(std::shared_ptr<typename ServiceT::Request> request, 
                     std::shared_ptr<typename ServiceT::Result> result);

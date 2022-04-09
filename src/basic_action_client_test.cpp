@@ -2,18 +2,20 @@
 
 namespace cmr_tests_utils {
 
-BasicActionClientTest::BasicActionClientTest(std::string client_node_name, std::string action_name, 
-                                             std::chrono::milliseconds action_timeout)
+template<class ActionT>
+BasicActionClientTest<ActionT>::BasicActionClientTest(std::string client_node_name, std::string action_name, 
+                                             unsigned int action_timeout_ms)
 {
   client_node_ = rclcpp::Node::make_shared(client_node_name);
-  action_client_ = rclcpp_action::create_client<ActionT>(shared_from_this(), action_name);
+  action_client_ = rclcpp_action::create_client<ActionT>(client_node_, action_name);
   
-  action_timeout_ = action_timeout;
+  action_timeout_ = std::chrono::milliseconds(action_timeout_ms);
   action_name_ = action_name;
   client_node_name_ = client_node_name;
 }
 
-bool is_action_ready() 
+template<class ActionT>
+bool BasicActionClientTest<ActionT>::is_action_ready() 
 {
   if (!rclcpp::ok())
   {
@@ -23,7 +25,8 @@ bool is_action_ready()
   return action_client_->wait_for_action_server(action_timeout_);
 }
 
-int8_t BasicActionClientTest::send_goal(ActionT::Goal goal) 
+template<class ActionT>
+int8_t BasicActionClientTest<ActionT>::send_goal(typename ActionT::Goal goal) 
 {
   if (!is_action_ready())
   {

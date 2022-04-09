@@ -9,30 +9,16 @@ class BasicNodeTest: public rclcpp::Node
 {
   public:
 
-  BasicNodeTest(std::string node_name): Node(node_name) {}
-  bool is_spinning = false;
-
-  void spin_some()
-  {
-    spin_thread_ = std::make_shared<std::thread>(&BasicNodeTest::spin_, this);
-    is_spinning = true;
-  }
-
-  void cancel_spin()
-  {
-    spin_thread_->join();
-    spin_thread_.reset();
-    is_spinning = false;
-  }
+  BasicNodeTest(std::string node_name);
+  void spin_some();
+  void cancel_spin();
+  const bool& get_is_spinning() const;
 
   private:
 
   std::shared_ptr<std::thread> spin_thread_;
-
-  void spin_()
-  {
-    rclcpp::spin(node_);
-  }
+  bool is_spinning_ = false;
+  void spin_();
 };
 
 }

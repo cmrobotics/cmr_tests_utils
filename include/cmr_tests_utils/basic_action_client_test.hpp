@@ -25,9 +25,9 @@ class BasicActionClientTest {
 
   bool is_action_ready() 
   {
-    if !(this->is_spinning)
+    if (!rclcpp::ok())
     {
-      RCLCPP_ERROR(rclcpp::get_logger(client_node_name_), "Failed to check if action server is responding: node is not spinning.");
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to check if action server is responding: ROS isn't running");
       return false;
     }
     return action_client_->wait_for_action_server(action_timeout_);
@@ -63,7 +63,7 @@ class BasicActionClientTest {
 
   private:
 
-  rclcpp::Client<ActionT>::SharedPtr action_client_;
+  rclcpp_action::Client<ActionT>::SharedPtr action_client_;
   rclcpp::Node::SharedPtr client_node_;
   rclcpp_action::ClientGoalHandle<ActionT> action_goal_handle_;
   std::string action_name_;

@@ -2,8 +2,6 @@
 #define BASIC_SERVICE_CLIENT_TEST_HPP
 
 #include "rclcpp/rclcpp.hpp"
-#include "rclcpp/rclcpp_service.hpp"
-#include "basic_node_test.hpp"
 #include <chrono>
 
 namespace cmr_tests_utils {

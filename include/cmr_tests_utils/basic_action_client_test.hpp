@@ -13,9 +13,9 @@ class BasicActionClientTest {
   public:
 
   BasicActionClientTest(std::string client_node_name, std::string action_name, 
-                        std::chrono::milliseconds action_timeout);
+                        unsigned int action_timeout_ms);
   bool is_action_ready();
-  int8_t send_goal(ActionT::Goal goal);
+  int8_t send_goal(typename ActionT::Goal goal);
 
   private:
 

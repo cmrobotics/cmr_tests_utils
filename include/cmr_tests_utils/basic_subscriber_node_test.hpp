@@ -22,8 +22,8 @@ class BasicSubscriberNodeTest: public BasicNodeTest {
 
   void topic_callback(const std::shared_ptr<MessageT> msg);
 
-  std::shared_ptr<rclcpp::Subscription<typename MessageT>> topic_sub_;
-  typename MessageT received_msg_;
+  typename rclcpp::Subscription<MessageT>::SharedPtr topic_sub_;
+  MessageT received_msg_;
   std::once_flag init_flag_;
   bool data_has_been_received_;
 };

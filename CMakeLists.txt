@@ -55,4 +55,8 @@ ament_export_include_directories(include)
 ament_export_libraries(cmr_tests_utils_lib)
 ament_export_dependencies(${dependencies})
 
+install(DIRECTORY include/
+  DESTINATION include/
+)
+
 ament_package()

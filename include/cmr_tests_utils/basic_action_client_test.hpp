@@ -3,7 +3,6 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/rclcpp_action.hpp"
-#include "basic_node_test.hpp"
 #include <chrono>
 
 namespace cmr_tests_utils {

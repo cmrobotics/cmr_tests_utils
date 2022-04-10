@@ -33,6 +33,11 @@ class BasicActionClientTest {
     return action_client_->wait_for_action_server(action_timeout_);
   }
 
+  const ActionT::Feedback& get_feedback() const
+  {
+    return feedback_;
+  }
+
   int8_t send_goal(typename ActionT::Goal goal)
   {
     if (!is_action_ready())
@@ -42,6 +47,8 @@ class BasicActionClientTest {
     }
 
     auto send_goal_options = rclcpp_action::Client<ActionT>::SendGoalOptions();
+    send_goal_options.feedback_callback =
+      std::bind(&BasicActionClientTest::feedback_callback, this, _1, _2);
     auto result_future = this->action_client_->async_send_goal(goal, send_goal_options);
 
     if (rclcpp::spin_until_future_complete(this->client_node_, result_future) ==
@@ -65,7 +72,14 @@ class BasicActionClientTest {
 
   private:
 
+  void BTPanel::feedback_callback(rclcpp_action::ClientGoalHandle<ActionT>::SharedPtr, const std::shared_ptr<const ActionT::Feedback> feedback)
+  {
+    if (!feedback) return;
+    feedback_ = *feedback;
+  }
+
   typename rclcpp_action::Client<ActionT>::SharedPtr action_client_;
+  typename ActionT::Feedback feedback_;
   rclcpp::Node::SharedPtr client_node_;
   rclcpp_action::ClientGoalHandle<ActionT> action_goal_handle_;
   std::string action_name_;

@@ -11,7 +11,7 @@ TEST(NodeCommunicationTest, spinning_test)
 
   auto basic_node = cmr_tests_utils::BasicNodeTest("test_node");
   EXPECT_FALSE(basic_node.get_is_spinning());
-  basic_node.spin_some();
+  basic_node.spin_in_new_thread();
   EXPECT_TRUE(basic_node.get_is_spinning());
 
   rclcpp::shutdown();
@@ -24,22 +24,22 @@ TEST(NodeCommunicationTest, is_node_spinning)
 
   auto sub_node = cmr_tests_utils::BasicSubscriberNodeTest<std_msgs::msg::Int32>("sub_test_node", "test_topic");
   auto pub_node = cmr_tests_utils::BasicPublisherNodeTest<std_msgs::msg::Int32>("pub_test_node", "test_topic", false, 100);
-  sub_node.spin_some();
-  pub_node.spin_some();
-  EXPECT_FALSE(sub_node.has_data_been_received());
+  sub_node.spin_in_new_thread();
+  pub_node.spin_in_new_thread();
+  EXPECT_EQ(sub_node.get_received_msg(), nullptr);
 
   std_msgs::msg::Int32 msg;
   msg.data = 42;
   pub_node.publish(msg);
   sleep(2);
-  EXPECT_TRUE(sub_node.has_data_been_received());
-  EXPECT_EQ(sub_node.get_received_msg().data, 42);
+  EXPECT_FALSE(!sub_node.get_received_msg());
+  EXPECT_EQ(sub_node.get_received_msg()->data, 42);
 
   msg.data = 1337;
   pub_node.publish(msg);
   sleep(2);
-  EXPECT_TRUE(sub_node.has_data_been_received());
-  EXPECT_EQ(sub_node.get_received_msg().data, 1337);
+  EXPECT_FALSE(!sub_node.get_received_msg());
+  EXPECT_EQ(sub_node.get_received_msg()->data, 1337);
 
   rclcpp::shutdown();
   sub_node.cancel_spin();

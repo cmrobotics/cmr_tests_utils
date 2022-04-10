@@ -12,24 +12,19 @@ BasicSubscriberNodeTest<MessageT>::BasicSubscriberNodeTest(std::string node_name
 }
 
 template<class MessageT>
-const bool& BasicSubscriberNodeTest<MessageT>::has_data_been_received() const 
+const std::shared_ptr<MessageT> BasicSubscriberNodeTest<MessageT>::get_received_msg() const 
 {
-  return data_has_been_received_;
-}
-
-template<class MessageT>
-const MessageT& BasicSubscriberNodeTest<MessageT>::get_received_msg() const 
-{
-  return received_msg_;
+  std::lock_guard<std::mutex> lock(msg_mutex_);
+  auto msg = received_msg_;
+  if (!msg) RCLCPP_WARN(get_logger(), "Tried to get received message from subscription but nothing was published yet.");
+  return msg;
 }
 
 template<class MessageT>
 void BasicSubscriberNodeTest<MessageT>::topic_callback(const std::shared_ptr<MessageT> msg) 
 {
-  std::call_once(init_flag_, [=] {
-    data_has_been_received_ = true;
-  });
-  received_msg_ = *msg;
+  std::lock_guard<std::mutex> lock(msg_mutex_);
+  received_msg_ = msg;
 }
 
 }

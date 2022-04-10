@@ -30,7 +30,7 @@ include_directories(include
   ${rclcpp_action_INCLUDE_DIRS}
 )
 
-add_library(cmr_tests_utils_lib 
+add_library(cmr_tests_utils_lib SHARED
   src/basic_node_test.cpp
   src/basic_action_client_test.cpp
   src/basic_service_client_test.cpp
@@ -56,7 +56,7 @@ ament_export_libraries(cmr_tests_utils_lib)
 ament_export_dependencies(${dependencies})
 
 install(DIRECTORY include/
-  DESTINATION include/
+  DESTINATION include/${PROJECT_NA}
 )
 
 ament_package()

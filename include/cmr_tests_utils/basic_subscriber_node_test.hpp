@@ -15,17 +15,15 @@ class BasicSubscriberNodeTest: public BasicNodeTest {
 
   BasicSubscriberNodeTest(std::string node_name, std::string topic_name, 
                           rclcpp::QoS qos = rclcpp::SystemDefaultsQoS());
-  const bool& has_data_been_received() const;
-  const MessageT& get_received_msg() const;
+  const std::shared_ptr<MessageT> get_received_msg() const;
 
   private:
 
   void topic_callback(const std::shared_ptr<MessageT> msg);
 
   typename rclcpp::Subscription<MessageT>::SharedPtr topic_sub_;
-  MessageT received_msg_;
-  std::once_flag init_flag_;
-  bool data_has_been_received_;
+  std::shared_ptr<MessageT> received_msg_;
+  mutable std::mutex msg_mutex_;
 };
 
 }

@@ -18,18 +18,21 @@ BasicPublisherNodeTest<MessageT>::BasicPublisherNodeTest(std::string node_name, 
 template<class MessageT>
 void BasicPublisherNodeTest<MessageT>::set_published_msg(const MessageT& msg)
 {
+  std::lock_guard<std::mutex> lock(msg_mutex_);
   published_msg_ = msg;
 }
 
 template<class MessageT>
 void BasicPublisherNodeTest<MessageT>::publish()
 {
+  std::lock_guard<std::mutex> lock(msg_mutex_);
   topic_pub_->publish(published_msg_);
 }
 
 template<class MessageT>
 void BasicPublisherNodeTest<MessageT>::publish(const MessageT& msg) 
 {
+  std::lock_guard<std::mutex> lock(msg_mutex_);
   topic_pub_->publish(msg);
 }
 

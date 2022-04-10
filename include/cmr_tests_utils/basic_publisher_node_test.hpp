@@ -3,6 +3,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "cmr_tests_utils/basic_node_test.hpp"
+#include <mutex>
 
 namespace cmr_tests_utils {
 
@@ -23,6 +24,7 @@ class BasicPublisherNodeTest: public BasicNodeTest {
   typename rclcpp::Publisher<MessageT> topic_pub_;
   MessageT published_msg_;
   rclcpp::TimerBase::SharedPtr timer_;
+  mutable std::mutex msg_mutex_;
 };
 
 }

@@ -49,6 +49,7 @@ class BasicNodeTest: public rclcpp::Node
   void spin_()
   {
     while (rclcpp::ok()) rclcpp::spin_some(get_node_base_interface());
+    is_spinning_.store(false);
   }
 
   std::shared_ptr<std::thread> spinner_;

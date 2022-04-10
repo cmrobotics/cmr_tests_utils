@@ -69,11 +69,11 @@ TEST(NodeCommunicationTest, pub_sub_communication)
   EXPECT_FALSE(pub_node.get_is_spinning());
 }
 
-TEST(NodeCommunicationTest, subscriber_sets_msg)
+TEST(NodeCommunicationTest, mismatched_topic_names)
 {
   rclcpp::init(0, nullptr);
 
-  auto sub_node = cmr_tests_utils::BasicSubscriberNodeTest<std_msgs::msg::Int32>("sub_test_node", "test_topic");
+  auto sub_node = cmr_tests_utils::BasicSubscriberNodeTest<std_msgs::msg::Int32>("sub_test_node", "test_topics");
   auto pub_node = cmr_tests_utils::BasicPublisherNodeTest<std_msgs::msg::Int32>("pub_test_node", "test_topic", false, 100);
   EXPECT_FALSE(sub_node.get_is_spinning());
   EXPECT_FALSE(pub_node.get_is_spinning());
@@ -96,14 +96,55 @@ TEST(NodeCommunicationTest, subscriber_sets_msg)
   std::this_thread::sleep_for(std::chrono::milliseconds(30));
   
   auto msg = sub_node.get_received_msg();
-  EXPECT_EQ(msg.data, 1337);
-
-  msg.data = 42;
-  auto new_msg = sub_node.get_received_msg();
-  EXPECT_EQ(new_msg.data, 1337);
+  EXPECT_FALSE(sub_node.has_data_been_received());
+  EXPECT_EQ(msg.data, 0);
   
   rclcpp::shutdown();
 
   EXPECT_FALSE(sub_node.get_is_spinning());
   EXPECT_FALSE(pub_node.get_is_spinning());
 }
+
+TEST(NodeCommunicationTest, publisher_with_timer)
+{
+  rclcpp::init(0, nullptr);
+
+  auto sub_node = cmr_tests_utils::BasicSubscriberNodeTest<std_msgs::msg::Int32>("sub_test_node", "test_topic");
+  auto pub_node = cmr_tests_utils::BasicPublisherNodeTest<std_msgs::msg::Int32>("pub_test_node", "test_topic", true, 100);
+  EXPECT_FALSE(sub_node.get_is_spinning());
+  EXPECT_FALSE(pub_node.get_is_spinning());
+  EXPECT_FALSE(sub_node.has_data_been_received());
+
+  // Spin both nodes
+  sub_node.spin_in_new_thread();
+  pub_node.spin_in_new_thread();
+
+  // Check that node is spinning
+  EXPECT_TRUE(pub_node.get_is_spinning());
+  EXPECT_TRUE(sub_node.get_is_spinning());
+
+  // Overhead for queued data population
+  std::this_thread::sleep_for(std::chrono::milliseconds(250));
+
+  EXPECT_FALSE(sub_node.has_data_been_received());
+
+  // Set timer handled published msg
+  std_msgs::msg::Int32 msg;
+  msg.data = 11;
+  pub_node.set_published_msg(msg);
+  std::this_thread::sleep_for(std::chrono::milliseconds(250));
+  auto rec_msg = sub_node.get_received_msg();
+  EXPECT_EQ(rec_msg.data, msg.data);
+
+  msg.data = 23;
+  pub_node.set_published_msg(msg);
+  std::this_thread::sleep_for(std::chrono::milliseconds(250));
+  rec_msg = sub_node.get_received_msg();
+  EXPECT_EQ(rec_msg.data, msg.data);
+  
+  rclcpp::shutdown();
+
+  EXPECT_FALSE(sub_node.get_is_spinning());
+  EXPECT_FALSE(pub_node.get_is_spinning());
+}
+

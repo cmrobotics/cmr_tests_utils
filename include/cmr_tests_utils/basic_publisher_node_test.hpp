@@ -29,7 +29,8 @@ class BasicPublisherNodeTest: public BasicNodeTest {
   void set_published_msg(const MessageT& msg)
   {
     std::lock_guard<std::mutex> lock(msg_mutex_);
-    published_msg_ = msg;
+    if (!published_msg_) published_msg_ = std::make_shared<MessageT>();
+    *published_msg_ = msg;
   }
 
   void publish(const MessageT& msg)
@@ -43,11 +44,16 @@ class BasicPublisherNodeTest: public BasicNodeTest {
   void publish_()
   {
     std::lock_guard<std::mutex> lock(msg_mutex_);
-    topic_pub_->publish(published_msg_);
+    if (!published_msg_)
+    {
+      RCLCPP_ERROR(get_logger(), "Failed to publish message, attribute was not set!");
+      return;
+    }
+    topic_pub_->publish(*published_msg_);
   }
 
   typename rclcpp::Publisher<MessageT>::SharedPtr topic_pub_;
-  MessageT published_msg_;
+  std::shared_ptr<MessageT> published_msg_;
   rclcpp::TimerBase::SharedPtr timer_;
   mutable std::mutex msg_mutex_;
 };

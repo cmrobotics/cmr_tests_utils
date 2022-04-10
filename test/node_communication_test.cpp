@@ -11,8 +11,11 @@ TEST(NodeCommunicationTest, simple_spinning_check)
 
   auto basic_node = cmr_tests_utils::BasicNodeTest("test_node");
   EXPECT_FALSE(basic_node.get_is_spinning());
+
   basic_node.spin_in_new_thread();
   EXPECT_TRUE(basic_node.get_is_spinning());
+
+  sleep(2);
 
   rclcpp::shutdown();
   basic_node.cancel_spin();
@@ -32,14 +35,19 @@ TEST(NodeCommunicationTest, pub_sub_communication)
   std_msgs::msg::Int32 msg;
   msg.data = 42;
   pub_node.publish(msg);
-  sleep(2);
 
   // Subscriber shouldn't have received anything
+  EXPECT_TRUE(!sub_node.get_received_msg());
+
+  sleep(2);
+
+  // Subscriber STILL shouldn't have received anything
   EXPECT_TRUE(!sub_node.get_received_msg());
 
   // Spin both nodes
   sub_node.spin_in_new_thread();
   pub_node.spin_in_new_thread();
+  sleep(2);
 
   // We expect the data to be received now
   EXPECT_TRUE(pub_node.get_is_spinning());

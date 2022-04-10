@@ -30,12 +30,32 @@ include_directories(include
   ${rclcpp_action_INCLUDE_DIRS}
 )
 
-add_library(cmr_tests_utils_lib SHARED
-  src/basic_node_test.cpp
-  src/basic_action_client_test.cpp
-  src/basic_service_client_test.cpp
-  src/basic_subscriber_node_test.cpp
-  src/basic_publisher_node_test.cpp
+set(LIBRARY_NAME "${PROJECT_NAME}_lib")
+
+add_library(${LIBRARY_NAME} INTERFACE)
+
+target_include_directories(${LIBRARY_NAME} INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+target_link_libraries(${LIBRARY_NAME} INTERFACE
+  ${rclcpp_lifecycle_LIBRARIES}
+  ${lifecycle_msgs_LIBRARIES}
+  ${rclcpp_LIBRARIES}
+  ${rclcpp_action_LIBRARIES}
+)
+
+install(TARGETS ${LIBRARY_NAME}
+  EXPORT "export_${PROJECT_NAME}"
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib
+  INCLUDES DESTINATION include
+)
+
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION include/${PROJECT_NAME}
 )
 
 set(dependencies
@@ -52,11 +72,7 @@ if(BUILD_TESTING)
 endif()
 
 ament_export_include_directories(include)
-ament_export_libraries(cmr_tests_utils_lib)
 ament_export_dependencies(${dependencies})
-
-install(DIRECTORY include/
-  DESTINATION include/${PROJECT_NAME}
-)
+ament_export_targets("export_${PROJECT_NAME}")
 
 ament_package()

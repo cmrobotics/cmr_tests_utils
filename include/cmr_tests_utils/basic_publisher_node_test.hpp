@@ -13,15 +13,38 @@ class BasicPublisherNodeTest: public BasicNodeTest {
   public:
   
   BasicPublisherNodeTest(std::string node_name, std::string topic_name, bool use_timer,
-                          unsigned int publish_period = 100,
-                          rclcpp::QoS qos = rclcpp::SystemDefaultsQoS());
-  void set_published_msg(const MessageT& msg);
-  void publish();
-  void publish(const MessageT& msg);
+                          unsigned int publish_period_ms = 100,
+                          rclcpp::QoS qos = rclcpp::SystemDefaultsQoS())
+    : BasicNodeTest(node_name)
+  {
+    topic_pub_ = this->create_publisher<MessageT> (topic_name, qos);
+    if (use_timer) timer_ = this->create_wall_timer(
+                              std::chrono::milliseconds(publish_period_ms), 
+                              std::bind(&BasicPublisherNodeTest::publish_, this)
+                            );
+  }
+
+  void set_published_msg(const MessageT& msg)
+  {
+    std::lock_guard<std::mutex> lock(msg_mutex_);
+    published_msg_ = msg;
+  }
+
+  void publish(const MessageT& msg)
+  {
+    std::lock_guard<std::mutex> lock(msg_mutex_);
+    topic_pub_->publish(msg);
+  }
 
   private:
 
-  typename rclcpp::Publisher<MessageT> topic_pub_;
+  void publish_()
+  {
+    std::lock_guard<std::mutex> lock(msg_mutex_);
+    topic_pub_->publish(published_msg_);
+  }
+
+  typename rclcpp::Publisher<MessageT>::SharedPtr topic_pub_;
   MessageT published_msg_;
   rclcpp::TimerBase::SharedPtr timer_;
   mutable std::mutex msg_mutex_;

@@ -5,7 +5,7 @@
 #include "cmr_tests_utils/basic_subscriber_node_test.hpp"
 #include "std_msgs/msg/int32.hpp"
 
-TEST(NodeCommunicationTest, simple_pub_sub_communication)
+TEST(NodeCommunicationTest, simple_spinning_check)
 {
   rclcpp::init(0, nullptr);
 
@@ -18,7 +18,7 @@ TEST(NodeCommunicationTest, simple_pub_sub_communication)
   basic_node.cancel_spin();
 }
 
-TEST(NodeCommunicationTest, simple_spinning_pub_sub_datastream)
+TEST(NodeCommunicationTest, pub_sub_communication)
 {
   rclcpp::init(0, nullptr);
 

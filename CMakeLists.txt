@@ -56,7 +56,7 @@ ament_export_libraries(cmr_tests_utils_lib)
 ament_export_dependencies(${dependencies})
 
 install(DIRECTORY include/
-  DESTINATION include/${PROJECT_NA}
+  DESTINATION include/${PROJECT_NAME}
 )
 
 ament_package()

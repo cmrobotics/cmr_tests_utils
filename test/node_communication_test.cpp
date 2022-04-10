@@ -18,7 +18,7 @@ TEST(NodeCommunicationTest, simple_spinning_check)
   EXPECT_TRUE(basic_node.get_is_spinning());
 
   rclcpp::shutdown();
-  basic_node.cancel_spin();
+  
   EXPECT_FALSE(basic_node.get_is_spinning());
 }
 
@@ -63,8 +63,9 @@ TEST(NodeCommunicationTest, pub_sub_communication)
   
   EXPECT_FALSE(!sub_node.get_received_msg());
   EXPECT_EQ(sub_node.get_received_msg()->data, 1337);
-
+  
   rclcpp::shutdown();
-  sub_node.cancel_spin();
-  pub_node.cancel_spin();
+
+  EXPECT_FALSE(sub_node.get_is_spinning());
+  EXPECT_FALSE(pub_node.get_is_spinning());
 }

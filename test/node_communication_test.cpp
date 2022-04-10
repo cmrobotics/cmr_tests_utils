@@ -4,6 +4,8 @@
 #include "cmr_tests_utils/basic_publisher_node_test.hpp"
 #include "cmr_tests_utils/basic_subscriber_node_test.hpp"
 #include "std_msgs/msg/int32.hpp"
+#include <chrono>
+#include <thread>
 
 TEST(NodeCommunicationTest, simple_spinning_check)
 {
@@ -15,10 +17,9 @@ TEST(NodeCommunicationTest, simple_spinning_check)
   basic_node.spin_in_new_thread();
   EXPECT_TRUE(basic_node.get_is_spinning());
 
-  sleep(2);
-
   rclcpp::shutdown();
   basic_node.cancel_spin();
+  EXPECT_FALSE(basic_node.get_is_spinning());
 }
 
 TEST(NodeCommunicationTest, pub_sub_communication)
@@ -39,26 +40,27 @@ TEST(NodeCommunicationTest, pub_sub_communication)
   // Subscriber shouldn't have received anything
   EXPECT_TRUE(!sub_node.get_received_msg());
 
-  sleep(2);
-
-  // Subscriber STILL shouldn't have received anything
-  EXPECT_TRUE(!sub_node.get_received_msg());
-
   // Spin both nodes
   sub_node.spin_in_new_thread();
   pub_node.spin_in_new_thread();
-  sleep(2);
 
-  // We expect the data to be received now
+  // Overhead for queued data population
+  std::this_thread::sleep_for(std::chrono::milliseconds(30));
+
+  // Check that node is spinning
   EXPECT_TRUE(pub_node.get_is_spinning());
   EXPECT_TRUE(sub_node.get_is_spinning());
+  
   EXPECT_FALSE(!sub_node.get_received_msg());
   EXPECT_EQ(sub_node.get_received_msg()->data, 42);
   
   // Publish a message when both nodes are spinning
   msg.data = 1337;
   pub_node.publish(msg);
-  sleep(2);
+
+  // Overhead for queued data population
+  std::this_thread::sleep_for(std::chrono::milliseconds(30));
+  
   EXPECT_FALSE(!sub_node.get_received_msg());
   EXPECT_EQ(sub_node.get_received_msg()->data, 1337);
 

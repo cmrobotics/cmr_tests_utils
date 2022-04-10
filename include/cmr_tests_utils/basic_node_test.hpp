@@ -33,6 +33,7 @@ class BasicNodeTest: public rclcpp::Node
 
   void cancel_spin()
   {
+    if (!spinner_) return;
     spinner_->join();
     spinner_.reset();
     is_spinning_.store(false);
@@ -47,7 +48,7 @@ class BasicNodeTest: public rclcpp::Node
 
   void spin_()
   {
-    rclcpp::spin(get_node_base_interface());
+    while (rclcpp::ok()) rclcpp::spin_some(get_node_base_interface());
   }
 
   std::shared_ptr<std::thread> spinner_;

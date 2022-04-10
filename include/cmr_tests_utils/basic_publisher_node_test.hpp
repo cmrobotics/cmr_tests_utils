@@ -4,6 +4,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "cmr_tests_utils/basic_node_test.hpp"
 #include <mutex>
+#include <chrono>
+#include <thread>
 
 namespace cmr_tests_utils {
 

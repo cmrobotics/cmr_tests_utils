@@ -2,7 +2,6 @@
 #define BASIC_PUBLISHER_NODE_TEST_HPP
 
 #include "rclcpp/rclcpp.hpp"
-#include "cmr_tests_utils/basic_node_test.hpp"
 #include <mutex>
 #include <chrono>
 #include <thread>
@@ -10,14 +9,14 @@
 namespace cmr_tests_utils {
 
 template<class MessageT>
-class BasicPublisherNodeTest: public BasicNodeTest {
+class BasicPublisherNodeTest: public rclcpp::Node {
 
   public:
   
   BasicPublisherNodeTest(std::string node_name, std::string topic_name, bool use_timer,
                           unsigned int publish_period_ms = 100,
                           rclcpp::QoS qos = rclcpp::SystemDefaultsQoS())
-    : BasicNodeTest(node_name)
+    : rclcpp::Node(node_name)
   {
     topic_pub_ = this->create_publisher<MessageT> (topic_name, qos);
     if (use_timer) timer_ = this->create_wall_timer(

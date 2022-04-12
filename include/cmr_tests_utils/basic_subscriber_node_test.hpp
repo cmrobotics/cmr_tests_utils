@@ -2,19 +2,18 @@
 #define BASIC_SUBSCRIBER_NODE_TEST_HPP
 
 #include "rclcpp/rclcpp.hpp"
-#include "basic_node_test.hpp" 
 #include <mutex>
 
 namespace cmr_tests_utils
 {
 
 template<class MessageT>
-class BasicSubscriberNodeTest: public BasicNodeTest {
+class BasicSubscriberNodeTest: public rclcpp::Node {
 
   public:
 
   BasicSubscriberNodeTest(std::string node_name, std::string topic_name, 
-                          rclcpp::QoS qos = rclcpp::SystemDefaultsQoS()): BasicNodeTest(node_name)
+                          rclcpp::QoS qos = rclcpp::SystemDefaultsQoS()): rclcpp::Node(node_name)
   {
     topic_sub_ = this->create_subscription<MessageT> (
                 topic_name, qos,

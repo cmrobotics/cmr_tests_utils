@@ -8,7 +8,7 @@ endif()
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD 20)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -71,6 +71,7 @@ if(BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
+# ament_export_libraries(${LIBRARY_NAME} INTERFACE)
 ament_export_include_directories(include)
 ament_export_dependencies(${dependencies})
 ament_export_targets("export_${PROJECT_NAME}")

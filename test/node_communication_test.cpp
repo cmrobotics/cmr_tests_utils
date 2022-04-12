@@ -16,8 +16,8 @@ TEST(NodeCommunicationTest, pub_sub_communication)
   auto pub_node = std::make_shared<cmr_tests_utils::BasicPublisherNodeTest<std_msgs::msg::Int32>>("pub_test_node", "test_topic", false, 100);
   EXPECT_FALSE(sub_node->has_data_been_received());
 
-  spinner.add_node(sub_node);
-  spinner.add_node(pub_node);
+  spinner.add_node(sub_node->get_node_base_interface());
+  spinner.add_node(pub_node->get_node_base_interface());
 
   // Publish Data without Spinning
   std_msgs::msg::Int32 msg;
@@ -56,8 +56,10 @@ TEST(NodeCommunicationTest, mismatched_topic_names)
   auto spinner_pub = cmr_tests_utils::SingleThreadSpinner();
   auto sub_node = std::make_shared<cmr_tests_utils::BasicSubscriberNodeTest<std_msgs::msg::Int32>>("sub_test_node", "test_topics");
   auto pub_node = std::make_shared<cmr_tests_utils::BasicPublisherNodeTest<std_msgs::msg::Int32>>("pub_test_node", "test_topic", false, 100);
-  EXPECT_FALSE(sub_node->get_is_spinning());
-  EXPECT_FALSE(pub_node->get_is_spinning());
+  
+  spinner_sub.add_node(sub_node->get_node_base_interface());
+  spinner_pub.add_node(pub_node->get_node_base_interface());
+  
   EXPECT_FALSE(sub_node->has_data_been_received());
 
   // Spin both nodes
@@ -83,20 +85,18 @@ TEST(NodeCommunicationTest, publisher_with_timer)
 {
   rclcpp::init(0, nullptr);
 
-  auto spinner = cmr_tests_utils::SingleThreadSpinner()
+  auto spinner = cmr_tests_utils::SingleThreadSpinner();
   auto sub_node = std::make_shared<cmr_tests_utils::BasicSubscriberNodeTest<std_msgs::msg::Int32>>("sub_test_node", "test_topic");
   auto pub_node = std::make_shared<cmr_tests_utils::BasicPublisherNodeTest<std_msgs::msg::Int32>>("pub_test_node", "test_topic", true, 100);
-  EXPECT_FALSE(sub_node->get_is_spinning());
-  EXPECT_FALSE(pub_node->get_is_spinning());
+  
+  
   EXPECT_FALSE(sub_node->has_data_been_received());
 
   // Spin both nodes
-  spinner.add_node(pub_node);
-  spinner.add_node(sub_node);
+  spinner.add_node(pub_node->get_node_base_interface());
+  spinner.add_node(sub_node->get_node_base_interface());
 
-  // Check that node is spinning
-  EXPECT_TRUE(pub_node->get_is_spinning());
-  EXPECT_TRUE(sub_node->get_is_spinning());
+  spinner.spin_some_all_nodes();
 
   // Overhead for queued data population
   std::this_thread::sleep_for(std::chrono::milliseconds(250));

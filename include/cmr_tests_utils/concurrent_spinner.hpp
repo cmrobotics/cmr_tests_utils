@@ -28,58 +28,29 @@ class ConcurrentSpinner
     are_all_nodes_spinning_.store(false);
   }
 
-  bool add_node(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
-  {
-    std::lock_guard<std::mutex> lock(mutex_);
-    return add_node_(node);
-  }
 
   bool add_node(rclcpp_lifecycle::LifecycleNode::SharedPtr lc_node)
   {
     std::lock_guard<std::mutex> lock(mutex_);
-    return add_node_(lc_node->get_node_base_interface());
+    return add_node(lc_node->get_node_base_interface());
   }
 
   bool add_node(rclcpp::Node::SharedPtr node)
   {
     std::lock_guard<std::mutex> lock(mutex_);
-    return add_node_(node->get_node_base_interface());
-  }
-
-  bool add_node(std::shared_ptr<cmr_tests_utils::BasicSubscriberNodeTest> node)
-  {
-    std::lock_guard<std::mutex> lock(mutex_);
-    return add_node_(node->get_node_base_interface());
-  }
-
-  bool add_node(std::shared_ptr<cmr_tests_utils::BasicPublisherNodeTest> node)
-  {
-    std::lock_guard<std::mutex> lock(mutex_);
-    return add_node_(node->get_node_base_interface());
+    return add_node(node->get_node_base_interface());
   }
 
   bool remove_node(rclcpp_lifecycle::LifecycleNode::SharedPtr lc_node)
   {
     std::lock_guard<std::mutex> lock(mutex_);
-    return remove_node_(lc_node->get_node_base_interface());
+    return remove_node(lc_node->get_node_base_interface());
   }
 
   bool remove_node(rclcpp::Node::SharedPtr node)
   {
     std::lock_guard<std::mutex> lock(mutex_);
-    return remove_node_(node->get_node_base_interface());
-  }
-
-  bool remove_node(std::shared_ptr<cmr_tests_utils::BasicPublisherNodeTest> node)
-  {
-    std::lock_guard<std::mutex> lock(mutex_);
-    return remove_node_(node->get_node_base_interface());
-  }
-
-  bool remove_node(std::shared_ptr<cmr_tests_utils::BasicSubscriberNodeTest> node)
-  {
-    std::lock_guard<std::mutex> lock(mutex_);
-    return remove_node_(node->get_node_base_interface());
+    return remove_node(node->get_node_base_interface());
   }
 
   bool cancel_all_spin()
@@ -108,17 +79,7 @@ class ConcurrentSpinner
     return are_all_nodes_spinning_.load();
   }
 
-  protected:
-
-  std::map<std::string, std::shared_ptr<rclcpp::node_interfaces::NodeBaseInterface>> nodes_;
-  std::mutex mutex_;
-  std::vector<std::shared_ptr<std::thread>> spinner_threads_;
-  std::atomic<bool> are_all_nodes_spinning_ = false;
-  std::atomic<bool> cancel_spin_called_ = false;
-
-  private:
-
-  bool add_node_(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
+  bool add_node(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
   {
     try {
       // This block ensures no external executor has registered the node.
@@ -141,7 +102,7 @@ class ConcurrentSpinner
     return true;
   }
 
-  bool remove_node_(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
+  bool remove_node(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
   {
     if (!nodes_.contains(node->get_name()))
     {
@@ -152,6 +113,14 @@ class ConcurrentSpinner
     nodes_.erase(std::string(node->get_name()));
     return true;
   }
+
+  protected:
+
+  std::map<std::string, std::shared_ptr<rclcpp::node_interfaces::NodeBaseInterface>> nodes_;
+  std::mutex mutex_;
+  std::vector<std::shared_ptr<std::thread>> spinner_threads_;
+  std::atomic<bool> are_all_nodes_spinning_ = false;
+  std::atomic<bool> cancel_spin_called_ = false;
 };
 
 }

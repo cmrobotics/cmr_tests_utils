@@ -84,6 +84,7 @@ TEST(NodeCommunicationTest, mismatched_topic_names)
 TEST(NodeCommunicationTest, publisher_with_timer)
 {
   rclcpp::init(0, nullptr);
+  std::this_thread::sleep_for(std::chrono::milliseconds(30));
 
   auto spinner = cmr_tests_utils::SingleThreadSpinner();
   auto sub_node = std::make_shared<cmr_tests_utils::BasicSubscriberNodeTest<std_msgs::msg::Int32>>("sub_test_node", "test_topic");
@@ -117,5 +118,6 @@ TEST(NodeCommunicationTest, publisher_with_timer)
   rec_msg = sub_node->get_received_msg();
   EXPECT_EQ(rec_msg.data, msg.data);
   
+  std::this_thread::sleep_for(std::chrono::milliseconds(30));
   rclcpp::shutdown();
 }

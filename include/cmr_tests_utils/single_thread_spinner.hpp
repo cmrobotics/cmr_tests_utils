@@ -35,16 +35,22 @@ class SingleThreadSpinner: public ConcurrentSpinner
 
   void spin_all_nodes_()
   {
-    while (rclcpp::ok()) 
-    {
-      for (auto n : ConcurrentSpinner::nodes_)
+    try {
+      while (rclcpp::ok()) 
       {
-        rclcpp::spin_some(n.second);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        ConcurrentSpinner::mutex_.lock();
+        for (auto n : ConcurrentSpinner::nodes_)
+        {
+          rclcpp::spin_some(n.second);
+          std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        ConcurrentSpinner::mutex_.unlock();
+        if (ConcurrentSpinner::cancel_spin_called_.load()) break;
       }
-      if (ConcurrentSpinner::cancel_spin_called_.load()) break;
+      RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Single Thread Spinner was cancelled.");
+    } catch (rclcpp::exceptions::RCLError & ex) {
+      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to spin nodes: %s", ex.what());
     }
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Single Thread Spinner was cancelled.");
     ConcurrentSpinner::cancel_spin_called_.store(false);
     ConcurrentSpinner::are_all_nodes_spinning_.store(false);
   }

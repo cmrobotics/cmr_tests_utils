@@ -14,7 +14,7 @@ class ConcurrentSpinner
 {
   public:
 
-  explicit ConcurrentSpinner() {}
+  ConcurrentSpinner() {}
 
   ~ConcurrentSpinner()
   {
@@ -28,28 +28,23 @@ class ConcurrentSpinner
     are_all_nodes_spinning_.store(false);
   }
 
-
   bool add_node(rclcpp_lifecycle::LifecycleNode::SharedPtr lc_node)
   {
-    std::lock_guard<std::mutex> lock(mutex_);
     return add_node(lc_node->get_node_base_interface());
   }
 
   bool add_node(rclcpp::Node::SharedPtr node)
   {
-    std::lock_guard<std::mutex> lock(mutex_);
     return add_node(node->get_node_base_interface());
   }
 
   bool remove_node(rclcpp_lifecycle::LifecycleNode::SharedPtr lc_node)
   {
-    std::lock_guard<std::mutex> lock(mutex_);
     return remove_node(lc_node->get_node_base_interface());
   }
 
   bool remove_node(rclcpp::Node::SharedPtr node)
   {
-    std::lock_guard<std::mutex> lock(mutex_);
     return remove_node(node->get_node_base_interface());
   }
 
@@ -81,6 +76,7 @@ class ConcurrentSpinner
 
   bool add_node(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
   {
+    std::lock_guard<std::mutex> lock(mutex_);
     try {
       // This block ensures no external executor has registered the node.
       rclcpp::executors::SingleThreadedExecutor exe;
@@ -104,6 +100,7 @@ class ConcurrentSpinner
 
   bool remove_node(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
   {
+    std::lock_guard<std::mutex> lock(mutex_);
     if (!nodes_.contains(node->get_name()))
     {
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to remove node to concurrent spinner, the node was never registered in the spinner.");
@@ -121,6 +118,7 @@ class ConcurrentSpinner
   std::vector<std::shared_ptr<std::thread>> spinner_threads_;
   std::atomic<bool> are_all_nodes_spinning_ = false;
   std::atomic<bool> cancel_spin_called_ = false;
+
 };
 
 }

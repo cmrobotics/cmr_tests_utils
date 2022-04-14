@@ -21,7 +21,7 @@ class BasicServiceClientTest {
     client_node_name_ = client_node_name;
   }
 
-  bool is_service_ready()
+  bool is_server_ready()
   {
     if (!rclcpp::ok())
     {
@@ -33,7 +33,7 @@ class BasicServiceClientTest {
 
   std::shared_ptr<typename ServiceT::Response> send_request(std::shared_ptr<typename ServiceT::Request> request)
   {
-    if (!is_service_ready()) return nullptr;
+    if (!is_server_ready()) return nullptr;
 
     auto res = service_client_->async_send_request(request);
     if (rclcpp::spin_until_future_complete(client_node_, res) ==

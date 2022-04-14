@@ -7,7 +7,7 @@
 #include <chrono>
 #include <thread>
 
-TEST(NodeCommunicationTest, pub_sub_communication)
+TEST(PubSubCommunication, pub_sub_communication)
 {
   rclcpp::init(0, nullptr);
 
@@ -48,7 +48,7 @@ TEST(NodeCommunicationTest, pub_sub_communication)
   rclcpp::shutdown();
 }
 
-TEST(NodeCommunicationTest, mismatched_topic_names)
+TEST(PubSubCommunication, mismatched_topic_names)
 {
   rclcpp::init(0, nullptr);
 
@@ -81,7 +81,7 @@ TEST(NodeCommunicationTest, mismatched_topic_names)
   rclcpp::shutdown();
 }
 
-TEST(NodeCommunicationTest, publisher_with_timer)
+TEST(PubSubCommunication, publisher_with_timer)
 {
   rclcpp::init(0, nullptr);
   std::this_thread::sleep_for(std::chrono::milliseconds(30));

@@ -21,6 +21,7 @@ find_package(rclcpp_lifecycle REQUIRED)
 find_package(lifecycle_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
+find_package(example_interfaces REQUIRED)
 
 
 include_directories(include
@@ -28,6 +29,7 @@ include_directories(include
   ${lifecycle_msgs_INCLUDE_DIRS}
   ${rclcpp_INCLUDE_DIRS}
   ${rclcpp_action_INCLUDE_DIRS}
+  ${example_interfaces_INCLUDE_DIRS}
 )
 
 set(LIBRARY_NAME "${PROJECT_NAME}_lib")
@@ -44,6 +46,7 @@ target_link_libraries(${LIBRARY_NAME} INTERFACE
   ${lifecycle_msgs_LIBRARIES}
   ${rclcpp_LIBRARIES}
   ${rclcpp_action_LIBRARIES}
+  ${example_interfaces_LIBRARIES}
 )
 
 install(TARGETS ${LIBRARY_NAME}
@@ -63,6 +66,7 @@ set(dependencies
   "lifecycle_msgs"
   "rclcpp"
   "rclcpp_action"
+  "example_interfaces"
 )
 
 if(BUILD_TESTING)

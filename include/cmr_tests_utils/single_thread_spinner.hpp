@@ -38,13 +38,12 @@ class SingleThreadSpinner: public ConcurrentSpinner
     try {
       while (rclcpp::ok()) 
       {
-        ConcurrentSpinner::mutex_.lock();
+        rclcpp::executors::SingleThreadedExecutor exe;
         for (auto n : ConcurrentSpinner::nodes_)
         {
-          rclcpp::spin_some(n.second);
-          std::this_thread::sleep_for(std::chrono::milliseconds(10));
+          exe.add_node(n.second);
         }
-        ConcurrentSpinner::mutex_.unlock();
+        exe.spin_some();
         if (ConcurrentSpinner::cancel_spin_called_.load()) break;
       }
       RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Single Thread Spinner was cancelled.");

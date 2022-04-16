@@ -16,6 +16,10 @@ class MultiThreadSpinner
 
   ~MultiThreadSpinner() 
   {
+    for (auto spinner : spinners_)
+    {
+      spinner.second.reset();
+    }
     this->spinners_.clear();
   }
 

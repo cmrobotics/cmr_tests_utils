@@ -103,16 +103,17 @@ class SingleThreadSpinner: private rclcpp::executors::SingleThreadedExecutor
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "All registered nodes are already spinning");
       return false;
     }
-
-    mutex_.lock();
-    if (spinner_thread_)
+    
     {
-      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "All registered nodes are already spinning");
-      return false;
-    }
+      std::lock_guard<std::mutex> lock(mutex_);
+      if (spinner_thread_)
+      {
+        RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "All registered nodes are already spinning");
+        return false;
+      }
 
-    spinner_thread_ = std::make_shared<std::thread>(&SingleThreadSpinner::spin_all_nodes_, this);
-    mutex_.unlock();
+      spinner_thread_ = std::make_shared<std::thread>(&SingleThreadSpinner::spin_all_nodes_, this);
+    }
     are_all_nodes_spinning_.store(true);
     return true;
   }
@@ -124,9 +125,10 @@ class SingleThreadSpinner: private rclcpp::executors::SingleThreadedExecutor
     try {
       while (rclcpp::ok()) 
       {
-        mutex_.lock();
-        rclcpp::executors::SingleThreadedExecutor::spin_some();
-        mutex_.unlock();
+        {
+          std::lock_guard<std::mutex> lock(mutex_);
+          rclcpp::executors::SingleThreadedExecutor::spin_some();
+        }
         std::this_thread::sleep_for(std::chrono::milliseconds(30));
         if (cancel_spin_called_.load()) break;
       }

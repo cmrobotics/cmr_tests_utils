@@ -38,6 +38,8 @@ List the ready features here:
 - `Basic Publisher`
 - `Basic Service Client`
 - `Basic Action Client`
+- `Basic Action Server`
+- `Basic Service Server`
 - `Single Threaded Spinner` - calls `spin_some` for all nodes registered in one different thread.
 - `Multi Threaded Spinner` - calls `spin_some` for groups. Implements multiple instances of `SingleThreadSpinner`
 
@@ -117,11 +119,9 @@ rclcpp::shutdown();
 ## Room for Improvement
 
 Room for improvement:
-- Implement a Setup/Teardown Fixture for `rclcpp::init` and `rclcpp::shutdown`
+- Integrate a Setup/Teardown Fixture for `rclcpp::init` and `rclcpp::shutdown`
 
 To do:
-- Implement tests for `BasicActionClientTest`.
-- Implements tests for `BasicServiceClientTest`.
 - `CodeCov` and `CodeFactor` integration.
 
 

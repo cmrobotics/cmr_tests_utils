@@ -8,9 +8,9 @@ A header only library to facilitate writing `gtest` unit tests for ROS2 nodes.
 
 <div align="center">
 
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/cmroboitcs/cmr_tests_utils.svg)](http://isitmaintained.com/project/cmrobotics/cmr_tests_utils "Percentage of issues still open")
-[![GitHub license](https://img.shields.io/github/license/cmroboitcs/cmr_tests_utils.svg)](https://github.com/cmroboitcs/cmr_tests_utils/blob/galactic-devel/LICENSE)
-[![GitHub contributors](https://img.shields.io/github/contributors/cmroboitcs/cmr_tests_utils.svg)](https://GitHub.com/cmroboitcs/cmr_tests_utils/graphs/contributors/)
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/cmrobotics/cmr_tests_utils.svg)](http://isitmaintained.com/project/cmrobotics/cmr_tests_utils "Percentage of issues still open")
+[![GitHub license](https://img.shields.io/github/license/cmrobotics/cmr_tests_utils.svg)](https://github.com/cmrobotics/cmr_tests_utils/blob/galactic-devel/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/cmrobotics/cmr_tests_utils.svg)](https://GitHub.com/cmrobotics/cmr_tests_utils/graphs/contributors/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Naereen/StrapDown.js.svg)](https://GitHub.com/Naereen/StrapDown.js/pull/)
 

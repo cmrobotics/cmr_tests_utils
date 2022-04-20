@@ -7,6 +7,12 @@ A header only library to facilitate writing `gtest` unit tests for ROS2 nodes.
 </div>
 
 <div align="center">
+  
+  [![CodeFactor](https://www.codefactor.io/repository/github/cmrobotics/cmr_tests_utils/badge)](https://www.codefactor.io/repository/github/cmrobotics/cmr_tests_utils)
+  
+</div>
+  
+<div align="center">
 
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/cmrobotics/cmr_tests_utils.svg)](http://isitmaintained.com/project/cmrobotics/cmr_tests_utils "Percentage of issues still open")
 [![GitHub license](https://img.shields.io/github/license/cmrobotics/cmr_tests_utils.svg)](https://github.com/cmrobotics/cmr_tests_utils/blob/galactic-devel/LICENSE)

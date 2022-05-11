@@ -36,12 +36,17 @@ class BasicTfListenerNodeTest: public rclcpp::Node {
     }
 
     try {
+      if (!buffer_->canTransform(target_frame, in_pose.header.frame_id, rclcpp::Time())) {
+        RCLCPP_ERROR(get_logger(), "Transform between %s and %s was not available", in_pose.header.frame_id.c_str(), target_frame.c_str());
+        return false;
+      } 
+      // Transform is a blocking call that will hang forever if frames don't exist, so we call canTransform first
       buffer_->transform(in_pose, out_pose, target_frame);
       return true;
     } catch (tf2::ExtrapolationException & ex) {
       geometry_msgs::msg::TransformStamped transform;
 
-      if (this->lookup_transform(transform, target_frame, in_pose.header.frame_id)) 
+      if (this->lookup_transform(transform, target_frame, in_pose)) 
       {
         tf2::doTransform(in_pose, out_pose, transform);
         return true;
@@ -51,10 +56,31 @@ class BasicTfListenerNodeTest: public rclcpp::Node {
     return false;
   }
 
-  bool lookup_transform(geometry_msgs::msg::TransformStamped & transform, std::string target_frame, std::string source_frame) const
+  bool lookup_transform(geometry_msgs::msg::TransformStamped & transform, std::string target_frame, const geometry_msgs::msg::PoseStamped & source_pose) const
   {
     try {
-      transform = buffer_->lookupTransform(target_frame, source_frame, rclcpp::Time());
+      if (!buffer_->canTransform(target_frame, source_pose.header.frame_id, rclcpp::Time())) {
+        RCLCPP_ERROR(get_logger(), "Transform between %s and %s was not available", source_pose.header.frame_id.c_str(), target_frame.c_str());
+        return false;
+      } 
+      
+      // Lookup Transform is a blocking call that will hang forever if frames don't exist, so we call canTransform first
+      transform = buffer_->lookupTransform(target_frame, source_pose.header.frame_id, rclcpp::Time());
+
+      if ((rclcpp::Time(source_pose.header.stamp) - rclcpp::Time(transform.header.stamp)) > transform_tolerance_) 
+      {
+        RCLCPP_ERROR(rclcpp::get_logger("tf_help"), "Transform data too old when converting from %s to %s",
+          source_pose.header.frame_id.c_str(),
+          target_frame.c_str()
+        );
+        RCLCPP_ERROR(rclcpp::get_logger("tf_help"), "Data time: %ds %uns, Transform time: %ds %uns",
+          source_pose.header.stamp.sec,
+          source_pose.header.stamp.nanosec,
+          transform.header.stamp.sec,
+          transform.header.stamp.nanosec
+        );
+        return false;
+      }
     } catch (tf2::TransformException & ex) {
       RCLCPP_ERROR(
         rclcpp::get_logger("tf_help"),

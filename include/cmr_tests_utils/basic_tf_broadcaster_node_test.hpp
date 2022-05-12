@@ -33,11 +33,13 @@ class BasicTfBroadcasterNodeTest: public rclcpp::Node {
 
   const geometry_msgs::msg::TransformStamped& get_transform () const
   {
+    std::lock_guard<std::mutex> lock(tf_mutex_);
     return transform_;
   }
 
   void set_transform(const geometry_msgs::msg::TransformStamped & transform) 
   {
+    std::lock_guard<std::mutex> lock(tf_mutex_);
     transform_ = transform;
   }
 
@@ -45,6 +47,8 @@ class BasicTfBroadcasterNodeTest: public rclcpp::Node {
 
   void broadcast_transform_() 
   {
+    RCLCPP_ERROR(get_logger(), "Fuck you");
+    std::lock_guard<std::mutex> lock(tf_mutex_);
     transform_.header.stamp = clock_->now();
     broadcaster_->sendTransform(transform_);
   }
@@ -56,6 +60,7 @@ class BasicTfBroadcasterNodeTest: public rclcpp::Node {
   std::shared_ptr<tf2_ros::TransformBroadcaster> broadcaster_;
   geometry_msgs::msg::TransformStamped transform_;
   rclcpp::Clock::SharedPtr clock_;
+  mutable std::mutex tf_mutex_;
 };
 
 }

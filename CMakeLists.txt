@@ -22,6 +22,10 @@ find_package(lifecycle_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(example_interfaces REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_kdl REQUIRED)
 
 
 include_directories(include
@@ -30,6 +34,10 @@ include_directories(include
   ${rclcpp_INCLUDE_DIRS}
   ${rclcpp_action_INCLUDE_DIRS}
   ${example_interfaces_INCLUDE_DIRS}
+  ${geometry_msgs_INCLUDE_DIRS}
+  ${tf2_ros_INCLUDE_DIRS}
+  ${tf2_INCLUDE_DIRS}
+  ${tf2_kdl_INCLUDE_DIRS}
 )
 
 set(LIBRARY_NAME "${PROJECT_NAME}_lib")
@@ -47,6 +55,10 @@ target_link_libraries(${LIBRARY_NAME} INTERFACE
   ${rclcpp_LIBRARIES}
   ${rclcpp_action_LIBRARIES}
   ${example_interfaces_LIBRARIES}
+  ${geometry_msgs_LIBRARIES}
+  ${tf2_ros_LIBRARIES}
+  ${tf2_LIBRARIES}
+  ${tf2_kdl_LIBRARIES}
 )
 
 install(TARGETS ${LIBRARY_NAME}
@@ -67,6 +79,10 @@ set(dependencies
   "rclcpp"
   "rclcpp_action"
   "example_interfaces"
+  "geometry_msgs"
+  "tf2_ros"
+  "tf2"
+  "tf2_kdl"
 )
 
 if(BUILD_TESTING)

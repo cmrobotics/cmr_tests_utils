@@ -2,8 +2,8 @@
 #define SIMULATED_DIFFERENTIAL_ROBOT
 
 #include <chrono>
-#include "cmr_tests_utils/basic_tf_broadcaster_node_test.hpp"
-#include "cmr_tests_utils/basic_subscriber_node_test.hpp"
+#include "cmr_tests_utils/synchronous_nodes/basic_tf_broadcaster_node_test.hpp"
+#include "cmr_tests_utils/synchronous_nodes/basic_subscriber_node_test.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 

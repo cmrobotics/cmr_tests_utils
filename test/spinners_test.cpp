@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
 #include "rclcpp/rclcpp.hpp"
-#include "cmr_tests_utils/basic_publisher_node_test.hpp"
-#include "cmr_tests_utils/basic_subscriber_node_test.hpp"
+#include "cmr_tests_utils/synchronous_nodes/basic_publisher_node_test.hpp"
+#include "cmr_tests_utils/synchronous_nodes/basic_subscriber_node_test.hpp"
 #include "std_msgs/msg/int32.hpp"
-#include "cmr_tests_utils/single_thread_spinner.hpp"
-#include "cmr_tests_utils/multi_thread_spinner.hpp"
+#include "cmr_tests_utils/spinners/single_thread_spinner.hpp"
+#include "cmr_tests_utils/spinners/multi_thread_spinner.hpp"
 #include <chrono>
 #include <thread>
 

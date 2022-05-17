@@ -4,7 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include <map>
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
-#include "cmr_tests_utils/spinners/single_thread_spinner.hpp"
+#include "cmr_tests_utils/single_thread_spinner.hpp"
 
 namespace cmr_tests_utils {
 

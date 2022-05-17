@@ -2,8 +2,8 @@
 #define SIMULATED_DIFFERENTIAL_ROBOT
 
 #include <chrono>
-#include "cmr_tests_utils/synchronous_nodes/basic_tf_broadcaster_node_test.hpp"
-#include "cmr_tests_utils/synchronous_nodes/basic_subscriber_node_test.hpp"
+#include "cmr_tests_utils/basic_tf_broadcaster_node_test.hpp"
+#include "cmr_tests_utils/basic_subscriber_node_test.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 
@@ -114,14 +114,14 @@ class SimulatedDifferentialRobot: public rclcpp::Node
   // Subscription Utils
   typename rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr vel_sub_;
   std::shared_ptr<geometry_msgs::msg::Twist> last_received_vel_;
-  double last_yaw_;  
 
   // Internal Attributes
   std::string base_frame_;
   std::string global_frame_;
   std::chrono::system_clock::time_point last_velocity_timestamp_; // As long as we don't have TwistStamped for velocities, it's the best we can do
-  bool is_broadcasting_;
-  double velocity_timeout_sec_;
+  bool is_broadcasting_ = false;
+  double last_yaw_ = 0.0;  
+  double velocity_timeout_sec_ = 0.5;
   double broadcast_period_sec_ = 0.01; // 100 Hz
 };
 

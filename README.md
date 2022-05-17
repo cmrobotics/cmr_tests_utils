@@ -40,14 +40,23 @@ The library provides an easy templated API for testing basic communication nodes
 
 ## Features
 List the ready features here:
+
+### Asynchronous Communication
 - `Basic Subscriber`
 - `Basic Publisher`
+
+### Synchronous Communication
 - `Basic Service Client`
 - `Basic Action Client`
 - `Basic Action Server`
 - `Basic Service Server`
+
+### Spinners
 - `Single Threaded Spinner` - calls `spin_some` for all nodes registered in one different thread.
 - `Multi Threaded Spinner` - calls `spin_some` for groups. Implements multiple instances of `SingleThreadSpinner`
+
+### Robots
+- `SimulatedDifferentialRobot`
 
 
 ## Setup

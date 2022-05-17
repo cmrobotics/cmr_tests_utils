@@ -18,16 +18,16 @@ class BasicTfBroadcasterNodeTest: public rclcpp::Node {
   public:
 
   BasicTfBroadcasterNodeTest(std::string node_name, geometry_msgs::msg::TransformStamped initial_transform, 
-                             unsigned int publish_period_ms): rclcpp::Node(node_name)
+                             unsigned int publish_period_ms = 100, bool use_timer = true): rclcpp::Node(node_name)
   {
     clock_ = get_clock();
     buffer_ = std::make_shared<tf2_ros::Buffer>(clock_);
     listener_ = std::make_shared<tf2_ros::TransformListener>(*buffer_);
     broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(this);
     transform_ = initial_transform;
-    timer_ = this->create_wall_timer(
+    if (use_timer) timer_ = this->create_wall_timer(
       std::chrono::milliseconds(publish_period_ms), 
-      std::bind(&BasicTfBroadcasterNodeTest::broadcast_transform_, this)
+      std::bind(&BasicTfBroadcasterNodeTest::broadcast_transform, this)
     );
   }
 
@@ -43,15 +43,14 @@ class BasicTfBroadcasterNodeTest: public rclcpp::Node {
     transform_ = transform;
   }
 
-  private:
-
-  void broadcast_transform_() 
+  void broadcast_transform() 
   {
-    RCLCPP_ERROR(get_logger(), "Fuck you");
     std::lock_guard<std::mutex> lock(tf_mutex_);
     transform_.header.stamp = clock_->now();
     broadcaster_->sendTransform(transform_);
   }
+
+  private:
 
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Duration transform_tolerance_ {0, 0};

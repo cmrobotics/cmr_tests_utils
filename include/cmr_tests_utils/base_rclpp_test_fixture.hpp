@@ -2,7 +2,7 @@
 #define BASE_RCLCPP_TEST_FIXTURE_HPP
 
 #include <gtest/gtest.h>
-#include "rclcpp/rclcpp.hpp"
+#include <rclcpp/rclcpp.hpp>
 
 namespace {
 

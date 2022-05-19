@@ -1,9 +1,10 @@
 #ifndef BASIC_ACTION_CLIENT_TEST_HPP
 #define BASIC_ACTION_CLIENT_TEST_HPP
 
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
 #include <chrono>
+
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp_action/rclcpp_action.hpp>
 
 namespace cmr_tests_utils {
 

@@ -1,10 +1,11 @@
 #ifndef SINGLE_THREAD_SPINNER_HPP
 #define SINGLE_THREAD_SPINNER_HPP
 
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include <thread>
 #include <map>
+
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp_lifecycle/lifecycle_node.hpp>
 
 namespace cmr_tests_utils {
 

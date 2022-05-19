@@ -2,10 +2,12 @@
 #define SIMULATED_DIFFERENTIAL_ROBOT
 
 #include <chrono>
+
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <geometry_msgs/msg/twist.hpp>
+
 #include "cmr_tests_utils/basic_tf_broadcaster_node_test.hpp"
 #include "cmr_tests_utils/basic_subscriber_node_test.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-#include "geometry_msgs/msg/twist.hpp"
 
 namespace cmr_tests_utils {
 
@@ -53,15 +55,15 @@ class SimulatedDifferentialRobot: public rclcpp::Node
     return transform_;
   }
 
-  geometry_msgs::msg::Twist get_last_velocity_msg() const
+  const shared_ptr<geometry_msgs::msg::Twist> get_last_velocity_msg() const
   {
     geometry_msgs::msg::Twist msg;
     if (!last_received_vel_) 
     {
       RCLCPP_WARN(get_logger(), "Tried to get last received velocity from subscription but nothing was published yet.");
-      return msg;
+      return last_received_vel_;
     }
-    return *last_received_vel_;
+    return last_received_vel_;
   }  
 
 

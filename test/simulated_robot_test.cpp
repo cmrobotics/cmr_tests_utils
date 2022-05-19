@@ -1,14 +1,17 @@
-#include "gtest/gtest.h"
-#include "rclcpp/rclcpp.hpp"
+#include <chrono>
+#include <thread>
+
+#include <gtest/gtest.h>
+#include <rclcpp/rclcpp.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <geometry_msgs/msg/pose_stamped.hpp>
+#include <geometry_msgs/msg/twist.hpp>
+
+
 #include "cmr_tests_utils/basic_publisher_node_test.hpp"
 #include "cmr_tests_utils/simulated_differential_robot.hpp"
 #include "cmr_tests_utils/basic_tf_listener_node_test.hpp"
 #include "cmr_tests_utils/multi_thread_spinner.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-#include "geometry_msgs/msg/pose_stamped.hpp"
-#include "geometry_msgs/msg/twist.hpp"
-#include <chrono>
-#include <thread>
 
 TEST(SimulatedRobot, robot_has_not_moved)
 {

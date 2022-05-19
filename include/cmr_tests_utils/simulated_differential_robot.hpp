@@ -61,7 +61,6 @@ class SimulatedDifferentialRobot: public rclcpp::Node
     if (!last_received_vel_) 
     {
       RCLCPP_WARN(get_logger(), "Tried to get last received velocity from subscription but nothing was published yet.");
-      return last_received_vel_;
     }
     return last_received_vel_;
   }  

@@ -28,6 +28,7 @@ TEST(SimulatedRobot, robot_has_not_moved)
 
   // Test if robot has been constructed correctly
   ASSERT_FALSE(robot->has_vel_been_received());
+  ASSERT_EQ(robot->get_last_velocity_msg(), nullptr);
   ASSERT_EQ(robot->get_transform().header.frame_id, "odom");
   ASSERT_EQ(robot->get_transform().child_frame_id, "base_footprint");
 

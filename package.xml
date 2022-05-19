@@ -25,14 +25,3 @@
     <build_type>ament_cmake</build_type>
   </export>
 </package>
-
-
-${rclcpp_lifecycle_LIBRARIES}
-  ${lifecycle_msgs_LIBRARIES}
-  ${rclcpp_LIBRARIES}
-  ${rclcpp_action_LIBRARIES}
-  ${example_interfaces_LIBRARIES}
-  ${geometry_msgs_LIBRARIES}
-  ${tf2_ros_LIBRARIES}
-  ${tf2_LIBRARIES}
-  ${tf2_kdl_LIBRARIES}

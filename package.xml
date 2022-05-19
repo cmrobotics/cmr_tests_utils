@@ -9,10 +9,14 @@
   
   <build_depend>rclcpp_lifecycle</build_depend>
   <build_depend>rclcpp_action</build_depend>
-
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <build_depend>tf2</build_depend>
+  <build_depend>tf2_kdl</build_depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <test_depend>example_interfaces_LIBRARIES</test_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <test_depend>example_interfaces</test_depend>
@@ -21,3 +25,14 @@
     <build_type>ament_cmake</build_type>
   </export>
 </package>
+
+
+${rclcpp_lifecycle_LIBRARIES}
+  ${lifecycle_msgs_LIBRARIES}
+  ${rclcpp_LIBRARIES}
+  ${rclcpp_action_LIBRARIES}
+  ${example_interfaces_LIBRARIES}
+  ${geometry_msgs_LIBRARIES}
+  ${tf2_ros_LIBRARIES}
+  ${tf2_LIBRARIES}
+  ${tf2_kdl_LIBRARIES}

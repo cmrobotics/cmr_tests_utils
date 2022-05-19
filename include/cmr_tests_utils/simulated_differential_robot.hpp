@@ -55,7 +55,7 @@ class SimulatedDifferentialRobot: public rclcpp::Node
     return transform_;
   }
 
-  const shared_ptr<geometry_msgs::msg::Twist> get_last_velocity_msg() const
+  const std::shared_ptr<geometry_msgs::msg::Twist> get_last_velocity_msg() const
   {
     geometry_msgs::msg::Twist msg;
     if (!last_received_vel_) 

@@ -34,7 +34,7 @@ class BasicActionClientTest {
     return action_client_->wait_for_action_server(action_timeout_);
   }
 
-  rclcpp_action::ResultCode send_goal(typename ActionT::Goal goal)
+  rclcpp_action::ResultCode send_goal(const typename ActionT::Goal & goal)
   {
     if (!is_server_ready())
     {

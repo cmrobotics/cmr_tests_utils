@@ -65,6 +65,17 @@ class SimulatedDifferentialRobot: public rclcpp::Node
     return last_received_vel_;
   }  
 
+  void reset_odometry()
+  {
+    last_received_vel_.reset();
+    transform_.transform.translation.x = 0.0;
+    transform_.transform.translation.y = 0.0;
+    transform_.transform.translation.z = 0.0;
+    transform_.transform.rotation.x = 0.0;
+    transform_.transform.rotation.y = 0.0;
+    transform_.transform.rotation.z = 0.0;
+    transform_.transform.rotation.w = 1.0;
+  }
 
   private:  
 
@@ -86,7 +97,7 @@ class SimulatedDifferentialRobot: public rclcpp::Node
       
       // Estimate pose using last command and dt since 
       transform_.transform.translation.x += broadcast_period_sec_ * last_received_vel_->linear.x * cos(last_yaw_);
-      transform_.transform.translation.y += broadcast_period_sec_ * last_received_vel_->linear.y * sin(last_yaw_);
+      transform_.transform.translation.y += broadcast_period_sec_ * last_received_vel_->linear.x * sin(last_yaw_);
       last_yaw_ += broadcast_period_sec_ * last_received_vel_->angular.z;  
       tf2::Quaternion quat;
       quat.setRPY(0, 0, last_yaw_);

@@ -118,6 +118,18 @@ TEST(SimulatedRobot, robot_receives_exactly_one_command)
   ASSERT_NEAR(robot->get_transform().transform.rotation.y, 0.0, 0.01);
   ASSERT_NEAR(robot->get_transform().transform.rotation.z, 0.707, 0.01);
   ASSERT_NEAR(robot->get_transform().transform.rotation.w, 0.707, 0.01);
+
+  robot->reset_odometry();
+
+  ASSERT_FALSE(robot->has_vel_been_received());
+  ASSERT_EQ(robot->get_transform().header.frame_id, "odom");
+  ASSERT_EQ(robot->get_transform().child_frame_id, "base_footprint");
+  ASSERT_NEAR(robot->get_transform().transform.translation.x, 0.0, 0.01);
+  ASSERT_NEAR(robot->get_transform().transform.translation.y, 0.0, 0.01);
+  ASSERT_NEAR(robot->get_transform().transform.rotation.x, 0.0, 0.01);
+  ASSERT_NEAR(robot->get_transform().transform.rotation.y, 0.0, 0.01);
+  ASSERT_NEAR(robot->get_transform().transform.rotation.z, 0.0, 0.01);
+  ASSERT_NEAR(robot->get_transform().transform.rotation.w, 1.0, 0.01);
   
   rclcpp::shutdown();
 }

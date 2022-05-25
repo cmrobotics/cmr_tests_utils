@@ -1,5 +1,6 @@
 #ifndef BASIC_ACTION_SERVER_TEST_HPP
 #define BASIC_ACTION_SERVER_TEST_HPP
+#pragma once
 
 #include <string>
 #include <memory>

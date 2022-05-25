@@ -1,5 +1,6 @@
 #ifndef BASIC_ACTION_CLIENT_TEST_HPP
 #define BASIC_ACTION_CLIENT_TEST_HPP
+#pragma once
 
 #include <chrono>
 

@@ -1,5 +1,6 @@
 #ifndef BASIC_TF_BROADCASTER_NODE_TEST_HPP
 #define BASIC_TF_BROADCASTER_NODE_TEST_HPP
+#pragma once
 
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>

@@ -1,5 +1,6 @@
 #ifndef BASIC_PUBLISHER_NODE_TEST_HPP
 #define BASIC_PUBLISHER_NODE_TEST_HPP
+#pragma once
 
 #include <mutex>
 #include <chrono>

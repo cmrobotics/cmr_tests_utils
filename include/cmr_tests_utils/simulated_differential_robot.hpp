@@ -1,5 +1,6 @@
-#ifndef SIMULATED_DIFFERENTIAL_ROBOT
-#define SIMULATED_DIFFERENTIAL_ROBOT
+#ifndef SIMULATED_DIFFERENTIAL_ROBOT_HPP
+#define SIMULATED_DIFFERENTIAL_ROBOT_HPP
+#pragma once
 
 #include <chrono>
 
@@ -31,7 +32,7 @@ class SimulatedDifferentialRobot: public rclcpp::Node
     transform_.child_frame_id = base_frame;
 
     timer_ = this->create_wall_timer(
-      std::chrono::milliseconds(int(broadcast_period_sec_*1000)), 
+      std::chrono::milliseconds(static_cast<int>(broadcast_period_sec_*1000)), 
       std::bind(&SimulatedDifferentialRobot::broadcast_transform_, this)
     );  
 

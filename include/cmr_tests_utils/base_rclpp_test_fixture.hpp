@@ -1,5 +1,6 @@
 #ifndef BASE_RCLCPP_TEST_FIXTURE_HPP
 #define BASE_RCLCPP_TEST_FIXTURE_HPP
+#pragma once
 
 #include <gtest/gtest.h>
 #include <rclcpp/rclcpp.hpp>

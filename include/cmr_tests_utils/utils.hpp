@@ -1,5 +1,6 @@
 #ifndef CMR_TESTS_UTILS__UTILS_HPP
 #define CMR_TESTS_UTILS__UTILS_HPP
+#pragma once
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -32,18 +32,18 @@ class BasicActionClientTest {
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to check if action server is responding: ROS isn't running");
       return false;
     }
-    return action_client_->wait_for_action_server(action_timeout_);
+    return action_client_->action_server_is_ready();
   }
 
   rclcpp_action::ResultCode send_goal(const typename ActionT::Goal & goal)
   {
-    if (!is_server_ready())
+    if (!action_client_->wait_for_action_server(action_timeout_))
     {
       RCLCPP_ERROR(rclcpp::get_logger(client_node_name_), "Action server did not respond in time: failed to send goal");
       return rclcpp_action::ResultCode::ABORTED;
     }
 
-    auto result_future = this->action_client_->async_send_goal(goal);
+    auto result_future = action_client_->async_send_goal(goal);
 
     if (rclcpp::spin_until_future_complete(this->client_node_, result_future) ==
         rclcpp::FutureReturnCode::SUCCESS)

@@ -1,11 +1,13 @@
-#include "gtest/gtest.h"
-#include "rclcpp/rclcpp.hpp"
+#include <chrono>
+#include <thread>
+
+#include <gtest/gtest.h>
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/int32.hpp>
+
 #include "cmr_tests_utils/basic_publisher_node_test.hpp"
 #include "cmr_tests_utils/basic_subscriber_node_test.hpp"
 #include "cmr_tests_utils/single_thread_spinner.hpp"
-#include "std_msgs/msg/int32.hpp"
-#include <chrono>
-#include <thread>
 
 TEST(PubSubCommunication, pub_sub_communication)
 {

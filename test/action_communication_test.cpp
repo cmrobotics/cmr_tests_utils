@@ -1,11 +1,13 @@
-#include "gtest/gtest.h"
-#include "rclcpp/rclcpp.hpp"
+#include <chrono>
+#include <thread>
+
+#include <gtest/gtest.h>
+#include <rclcpp/rclcpp.hpp>
+#include <example_interfaces/action/fibonacci.hpp>
+
 #include "cmr_tests_utils/basic_action_server_test.hpp"
 #include "cmr_tests_utils/basic_action_client_test.hpp"
 #include "cmr_tests_utils/single_thread_spinner.hpp"
-#include "example_interfaces/action/fibonacci.hpp"
-#include <chrono>
-#include <thread>
 
 TEST(ServiceCommunication, action_communication)
 {

@@ -1,10 +1,9 @@
-#ifndef BASIC_SERVICE_SERVER_TEST_HPP
-#define BASIC_SERVICE_SERVER_TEST_HPP
+#pragma once
 
 #include <string>
 #include <memory>
 
-#include "rclcpp/rclcpp.hpp"
+#include <rclcpp/rclcpp.hpp>
 
 namespace cmr_tests_utils {
 
@@ -29,6 +28,7 @@ class BasicServiceServerTest: public rclcpp::Node
   }
 
   protected:
+
   virtual void request_callback(
     const std::shared_ptr<rmw_request_id_t> request_header,
     const std::shared_ptr<typename ServiceT::Request> request,
@@ -39,12 +39,12 @@ class BasicServiceServerTest: public rclcpp::Node
     last_request_ = request;
   }
 
+  std::shared_ptr<typename ServiceT::Request> last_request_;
+
   private:
   
   typename rclcpp::Service<ServiceT>::SharedPtr server_;
-  std::shared_ptr<typename ServiceT::Request> last_request_;
 };
 
 }
 
-#endif  // BASIC_SERVICE_SERVER_TEST_HPP

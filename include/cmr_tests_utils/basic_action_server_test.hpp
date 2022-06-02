@@ -1,11 +1,10 @@
-#ifndef BASIC_ACTION_SERVER_TEST_HPP
-#define BASIC_ACTION_SERVER_TEST_HPP
+#pragma once
 
 #include <string>
 #include <memory>
 
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp_action/rclcpp_action.hpp>
 
 namespace cmr_tests_utils {
 
@@ -79,4 +78,3 @@ class BasicActionServerTest : public rclcpp::Node
 
 }
 
-#endif  // TEST_ACTION_SERVER_HPP_

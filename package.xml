@@ -9,7 +9,10 @@
   
   <build_depend>rclcpp_lifecycle</build_depend>
   <build_depend>rclcpp_action</build_depend>
-
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <build_depend>tf2</build_depend>
+  <build_depend>tf2_geometry_msgs</build_depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

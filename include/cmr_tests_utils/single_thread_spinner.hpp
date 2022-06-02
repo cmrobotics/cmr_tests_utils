@@ -1,10 +1,10 @@
-#ifndef SINGLE_THREAD_SPINNER_HPP
-#define SINGLE_THREAD_SPINNER_HPP
+#pragma once
 
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include <thread>
 #include <map>
+
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp_lifecycle/lifecycle_node.hpp>
 
 namespace cmr_tests_utils {
 
@@ -129,7 +129,6 @@ class SingleThreadSpinner: private rclcpp::executors::SingleThreadedExecutor
           std::lock_guard<std::mutex> lock(mutex_);
           rclcpp::executors::SingleThreadedExecutor::spin_some();
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(30));
         if (cancel_spin_called_.load()) break;
       }
       RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Single Thread Spinner was cancelled.");
@@ -147,5 +146,3 @@ class SingleThreadSpinner: private rclcpp::executors::SingleThreadedExecutor
 };
 
 }
-
-#endif

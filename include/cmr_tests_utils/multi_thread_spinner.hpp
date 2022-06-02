@@ -1,9 +1,10 @@
-#ifndef MULTI_THREAD_SPINNER_HPP
-#define MULTI_THREAD_SPINNER_HPP
+#pragma once
 
-#include "rclcpp/rclcpp.hpp"
 #include <map>
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
+
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp_lifecycle/lifecycle_node.hpp>
+
 #include "cmr_tests_utils/single_thread_spinner.hpp"
 
 namespace cmr_tests_utils {
@@ -183,5 +184,3 @@ class MultiThreadSpinner
 };
 
 }
-
-#endif

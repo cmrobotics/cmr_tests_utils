@@ -1,8 +1,8 @@
-#ifndef BASIC_SERVICE_CLIENT_TEST_HPP
-#define BASIC_SERVICE_CLIENT_TEST_HPP
+#pragma once
 
-#include "rclcpp/rclcpp.hpp"
 #include <chrono>
+
+#include <rclcpp/rclcpp.hpp>
 
 namespace cmr_tests_utils {
 
@@ -57,5 +57,3 @@ class BasicServiceClientTest {
 };
 
 }
-
-#endif

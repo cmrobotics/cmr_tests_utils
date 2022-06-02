@@ -1,8 +1,8 @@
-#ifndef BASIC_SUBSCRIBER_NODE_TEST_HPP
-#define BASIC_SUBSCRIBER_NODE_TEST_HPP
+#pragma once
 
-#include "rclcpp/rclcpp.hpp"
 #include <mutex>
+
+#include <rclcpp/rclcpp.hpp>
 
 namespace cmr_tests_utils
 {
@@ -52,5 +52,3 @@ class BasicSubscriberNodeTest: public rclcpp::Node {
 };
 
 }
-
-#endif

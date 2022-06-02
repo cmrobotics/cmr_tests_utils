@@ -1,8 +1,7 @@
-#ifndef BASE_RCLCPP_TEST_FIXTURE_HPP
-#define BASE_RCLCPP_TEST_FIXTURE_HPP
+#pragma once
 
 #include <gtest/gtest.h>
-#include "rclcpp/rclcpp.hpp"
+#include <rclcpp/rclcpp.hpp>
 
 namespace {
 
@@ -22,9 +21,6 @@ public:
   void SetUp() override {}
 
   void TearDown() override {}
-
 };
 
 }
-
-#endif

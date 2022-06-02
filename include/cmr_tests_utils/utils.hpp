@@ -1,5 +1,3 @@
-#ifndef CMR_TESTS_UTILS__UTILS_HPP
-#define CMR_TESTS_UTILS__UTILS_HPP
 #pragma once
 
 #include <stdio.h>
@@ -18,5 +16,3 @@ double randMToN(double M, double N)
 }
 
 }
-
-#endif

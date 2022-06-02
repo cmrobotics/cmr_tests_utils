@@ -1,5 +1,3 @@
-#ifndef BASIC_SUBSCRIBER_NODE_TEST_HPP
-#define BASIC_SUBSCRIBER_NODE_TEST_HPP
 #pragma once
 
 #include <mutex>
@@ -54,5 +52,3 @@ class BasicSubscriberNodeTest: public rclcpp::Node {
 };
 
 }
-
-#endif

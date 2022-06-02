@@ -1,5 +1,3 @@
-#ifndef BASIC_SERVICE_SERVER_TEST_HPP
-#define BASIC_SERVICE_SERVER_TEST_HPP
 #pragma once
 
 #include <string>
@@ -50,4 +48,3 @@ class BasicServiceServerTest: public rclcpp::Node
 
 }
 
-#endif  // BASIC_SERVICE_SERVER_TEST_HPP

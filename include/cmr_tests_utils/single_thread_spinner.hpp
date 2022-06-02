@@ -1,5 +1,3 @@
-#ifndef SINGLE_THREAD_SPINNER_HPP
-#define SINGLE_THREAD_SPINNER_HPP
 #pragma once
 
 #include <thread>
@@ -148,5 +146,3 @@ class SingleThreadSpinner: private rclcpp::executors::SingleThreadedExecutor
 };
 
 }
-
-#endif

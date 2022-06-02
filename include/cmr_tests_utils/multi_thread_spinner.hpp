@@ -1,5 +1,3 @@
-#ifndef MULTI_THREAD_SPINNER_HPP
-#define MULTI_THREAD_SPINNER_HPP
 #pragma once
 
 #include <map>
@@ -186,5 +184,3 @@ class MultiThreadSpinner
 };
 
 }
-
-#endif

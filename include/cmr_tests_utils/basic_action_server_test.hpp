@@ -1,5 +1,3 @@
-#ifndef BASIC_ACTION_SERVER_TEST_HPP
-#define BASIC_ACTION_SERVER_TEST_HPP
 #pragma once
 
 #include <string>
@@ -80,4 +78,3 @@ class BasicActionServerTest : public rclcpp::Node
 
 }
 
-#endif  // TEST_ACTION_SERVER_HPP_

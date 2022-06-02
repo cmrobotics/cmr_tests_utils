@@ -1,5 +1,3 @@
-#ifndef SIMULATED_DIFFERENTIAL_ROBOT_HPP
-#define SIMULATED_DIFFERENTIAL_ROBOT_HPP
 #pragma once
 
 #include <chrono>
@@ -139,5 +137,3 @@ class SimulatedDifferentialRobot: public rclcpp::Node
 };
 
 }
-
-#endif

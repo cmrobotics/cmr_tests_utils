@@ -60,11 +60,11 @@ executors:
   simple-machine:
     machine: 
       image: ubuntu-2004:202111-02
-    working_directory: ~/workspace/src/<package_name> 
+    working_directory: ~/workspace/src/cmr_tests_utils 
   simple-docker:
     docker:
       - image: osrf/ros:galactic-desktop-focal
-    working_directory: ~/workspace/src/<package_name> 
+    working_directory: ~/workspace/src/cmr_tests_utils 
 jobs:
   build-test:
     executor: simple-machine
@@ -103,11 +103,11 @@ jobs:
       - colcon_build-orb/binarize
       - openvpn3/disconnect
       - store_artifacts:
-          path: ~/workspace/src/ros-galactic-<package_name>.deb 
+          path: ~/workspace/src/ros-galactic-cmr_tests_utils.deb 
       - persist_to_workspace:
           root: ~/workspace
           paths: 
-            - src/ros-galactic-<package_name>.deb 
+            - src/ros-galactic-cmr_tests_utils.deb 
   deploy:
     executor: simple-docker
     steps:

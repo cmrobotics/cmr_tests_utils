@@ -71,6 +71,19 @@ class BasicActionClientTest {
     return result_code_future.get().code;
   }
 
+  void cancel_goal() 
+  {
+    auto future_cancel = action_client_->async_cancel_goal(action_goal_handle_);
+    if (rclcpp::spin_until_future_complete(this->client_node_, future_cancel) !=
+      rclcpp::FutureReturnCode::SUCCESS)
+    {
+      RCLCPP_ERROR(rclcpp::get_logger(client_node_name_), "Failed to cancel action.");
+      return;
+    }
+
+    RCLCPP_INFO(rclcpp::get_logger(client_node_name_), "Successfully requested to cancel goal.");
+  }
+
   private:
 
   typename rclcpp_action::Client<ActionT>::SharedPtr action_client_;

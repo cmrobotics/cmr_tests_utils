@@ -3,6 +3,8 @@ version: 2.1
 
 orbs: 
   aws-s3: circleci/aws-s3@3.0.0
+  colcon_build-orb: cmrobotics/colcon_build-orb@0.2.1
+  openvpn3: versatile/openvpn3@1.0.19
 
 workflows:
   build, test and create:
@@ -10,7 +12,7 @@ workflows:
       - build-test:
           filters:
             tags:
-              ignore: /[0-9]*\.[0-9]*\.[0-9]/
+              ignore: /^[0-9]+\.[0-9]+\.[0-9]+$/
           context:
             - ROS Pipelines
             - OpenVPN
@@ -19,7 +21,7 @@ workflows:
             - build-test
           context:
             - ROS Pipelines
-
+            - OpenVPN
   build, test, create and deploy:
     jobs:
       - build-test:
@@ -27,7 +29,7 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /[0-9]*\.[0-9]*\.[0-9]/
+              only: /^[0-9]+\.[0-9]+\.[0-9]+$/
           context:
             - ROS Pipelines
             - OpenVPN
@@ -36,17 +38,18 @@ workflows:
             branches:
               ignore: /.*/
             tags:
-              only: /[0-9]*\.[0-9]*\.[0-9]/
+              only: /^[0-9]+\.[0-9]+\.[0-9]+$/
           requires:
             - build-test
           context:
             - ROS Pipelines
+            - OpenVPN
       - deploy:
           filters:
             branches:
               ignore: /.*/
             tags:
-              only: /[0-9]*\.[0-9]*\.[0-9]/
+              only: /^[0-9]+\.[0-9]+\.[0-9]+$/
           requires:
             - build-test
             - create
@@ -57,10 +60,10 @@ executors:
   simple-machine:
     machine: 
       image: ubuntu-2004:202111-02
-    working_directory: ~/workspace/src/linak_actuator_modbus
+    working_directory: ~/workspace/src/cmr_tests_utils 
   simple-docker:
     docker:
-      - image: gallaisoma/ros2-galactic:latest
+      - image: osrf/ros:galactic-desktop-focal
     working_directory: ~/workspace/src/cmr_tests_utils 
 jobs:
   build-test:
@@ -68,76 +71,43 @@ jobs:
     steps:
       - checkout:
           path: ~/workspace/src/$CIRCLE_PROJECT_REPONAME
-      - run:
-          name: Install OpenVPN3
-          command: |
-            sudo apt update && sudo apt install apt-transport-https
-            sudo wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
-            sudo apt-key add openvpn-repo-pkg-key.pub
-            sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-focal.list
-            sudo apt update && sudo apt install openvpn3
-      - run: 
-          name: VPN setup
-          background: true
-          command: |
-            echo $VPN_CLIENT_CONFIG | base64 --decode > /tmp/config.ovpn
-            phone_home=$(ss -Hnto state established '( sport = :ssh )' | head -n1 | awk '{ split($4, a, ":"); print a[1] }')
-            echo $phone_home
-            if [ -n "$phone_home" ]; then
-              echo -e "\nroute $phone_home 255.255.255.255 net_gateway" >> /tmp/config.ovpn
-            fi
-            echo "\nroute 169.254.0.0 255.255.0.0 net_gateway" >> /tmp/config.ovpn
-            sudo openvpn3 session-start --config /tmp/config.ovpn > /tmp/openvpn.log
-      - run:
-          name: Wait for the connection to be established and check
-          command: |
-            until sudo openvpn3 sessions-list|grep "Client connected"; do
-              echo "Attempting to connect to VPN server..."
-              sleep 1;
-            done
-      - run:
-          name: Start Docker
-          command: |
-            docker pull gallaisoma/ros2-galactic:latest
-            docker run -e ROSDISTRO_INDEX_URL=$ROSDISTRO_INDEX_URL -v ~/workspace/src/$CIRCLE_PROJECT_REPONAME:/root/workspace/src/$CIRCLE_PROJECT_REPONAME --name ci_fun -dit gallaisoma/ros2-galactic:latest 
-      - run:
-          name: Run build and test inside docker
-          command: docker exec -it ci_fun /bin/bash -c " source /opt/ros/galactic/setup.bash && cd ~/workspace && curl -o aptly_repo_signing.key http://172.31.46.198/aptly_repo_signing.key && apt-key add aptly_repo_signing.key && echo 'deb http://172.31.46.198/ focal main' >> /etc/apt/sources.list && apt update && rosdep init && rosdep update && rosdep install --from-paths src --ignore-src -r -y && colcon build --packages-up-to $CIRCLE_PROJECT_REPONAME && source install/setup.bash " 
-      - run:
-          name: Disconnect from OpenVPN
-          command: |
-            SESSION_PATH=$(sudo openvpn3 sessions-list | grep Path | awk -F': ' '{print $2}')
-            echo $SESSION_PATH
-            sudo openvpn3 session-manage --session-path $SESSION_PATH --disconnect
-          when: always
-
+      - openvpn3/install
+      - openvpn3/connect:
+        config: VPN_CLIENT_CONFIG
+      - openvpn3/check
+      - colcon_build-orb/docker_run:
+          rosdistro_url: ROSDISTRO_INDEX_URL
+          github_token: GITHUB_TOKEN
+          circle_project_repo: CIRCLE_PROJECT_REPONAME
+          workspace_volume: /home/circleci/workspace:/root/workspace
+      - colcon_build-orb/colcon_build
+      - openvpn3/disconnect
       - persist_to_workspace:
           root: ../..
           paths: 
             - .
   create:
-    executor: simple-docker
+    executor: simple-machine
     steps: 
       - attach_workspace:
           at: ~/workspace
-      - run:
-          name: Deploy the deb artifact
-          command: |
-            cd ~/workspace
-            mkdir ~/.ssh/
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
-            git clone git@github.com:cmrobotics/pipeline_scripts.git
-            cd ~/workspace/pipeline_scripts
-            ./binarization.sh
-
+      - openvpn3/install
+      - openvpn3/connect:
+        config: VPN_CLIENT_CONFIG
+      - openvpn3/check
+      - colcon_build-orb/docker_run:
+          rosdistro_url: ROSDISTRO_INDEX_URL
+          github_token: GITHUB_TOKEN
+          circle_project_repo: CIRCLE_PROJECT_REPONAME
+          workspace_volume: /home/circleci/workspace:/root/workspace
+      - colcon_build-orb/binarize
+      - openvpn3/disconnect
       - store_artifacts:
           path: ~/workspace/src/ros-galactic-cmr_tests_utils.deb 
-
       - persist_to_workspace:
           root: ~/workspace
           paths: 
             - src/ros-galactic-cmr_tests_utils.deb 
-
   deploy:
     executor: simple-docker
     steps:
@@ -146,6 +116,9 @@ jobs:
       - run:
           name: Renaming with tag name
           command: mv ~/workspace/src/ros-galactic-$CIRCLE_PROJECT_REPONAME.deb ~/workspace/src/ros-galactic-$CIRCLE_PROJECT_REPONAME-$CIRCLE_TAG.deb
+      - run:
+          name: Install unzip
+          command: apt update && apt install -y unzip
       - aws-s3/copy:
           arguments: |
             --acl private 
@@ -154,4 +127,3 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ~/workspace/src/ros-galactic-$CIRCLE_PROJECT_REPONAME-$CIRCLE_TAG.deb
           to: 's3://aptly-debian-files/ros-galactic-$CIRCLE_PROJECT_REPONAME.deb'
-

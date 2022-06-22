@@ -3,7 +3,7 @@ version: 2.1
 
 orbs: 
   aws-s3: circleci/aws-s3@3.0.0
-  colcon_build-orb: cmrobotics/colcon_build-orb@0.2.0
+  colcon_build-orb: cmrobotics/colcon_build-orb@0.2.1
   openvpn3: versatile/openvpn3@1.0.19
 
 workflows:

@@ -76,11 +76,13 @@ TEST(TransformsTest, listen_to_broadcasted_frames)
   tf.child_frame_id = "base";
   tf.transform.translation.x = 5;
   
-  auto tf_listener_node = std::make_shared<cmr_tests_utils::BasicTfListenerNodeTest>("tf_listener_node", 1.0);
-  auto tf_broadcaster_node = std::make_shared<cmr_tests_utils::BasicTfBroadcasterNodeTest>("tf_broadcaster_node", tf, 50);
+  auto tf_listener_node = std::make_shared<cmr_tests_utils::BasicTfListenerNodeTest>("tf_listener_node", 2.0);
+  auto tf_broadcaster_node = std::make_shared<cmr_tests_utils::BasicTfBroadcasterNodeTest>("tf_broadcaster_node", tf, 20);
   spinner.add_node(tf_broadcaster_node->get_node_base_interface());
   spinner.add_node(tf_listener_node->get_node_base_interface());
   spinner.spin_all_nodes();
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
   geometry_msgs::msg::TransformStamped test_tf;
   geometry_msgs::msg::PoseStamped pose;

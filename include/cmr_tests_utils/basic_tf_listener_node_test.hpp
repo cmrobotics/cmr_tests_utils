@@ -35,11 +35,11 @@ class BasicTfListenerNodeTest: public rclcpp::Node {
     }
 
     try {
-      if (!buffer_->canTransform(target_frame, in_pose.header.frame_id, rclcpp::Time(), transform_tolerance_)) {
+      if (!buffer_->canTransform(target_frame, in_pose.header.frame_id, clock_->now(), transform_tolerance_)) {
         RCLCPP_ERROR(get_logger(), "Transform between %s and %s was not available", in_pose.header.frame_id.c_str(), target_frame.c_str());
         return false;
       } 
-      // Transform is a blocking call that will hang forever if frames don't exist, so we call canTransform first
+
       buffer_->transform(in_pose, out_pose, target_frame);
       return true;
     } catch (tf2::ExtrapolationException & ex) {
@@ -58,13 +58,12 @@ class BasicTfListenerNodeTest: public rclcpp::Node {
   bool lookup_transform(geometry_msgs::msg::TransformStamped & transform, std::string target_frame, std::string source_frame) const
   {
     try {
-      if (!buffer_->canTransform(target_frame, source_frame, rclcpp::Time(), transform_tolerance_)) {
+      if (!buffer_->canTransform(target_frame, source_frame, clock_->now(), transform_tolerance_)) {
         RCLCPP_ERROR(get_logger(), "Transform between %s and %s was not available", source_frame.c_str(), target_frame.c_str());
         return false;
       } 
       
-      // Lookup Transform is a blocking call that will hang forever if frames don't exist, so we call canTransform first
-      transform = buffer_->lookupTransform(target_frame, source_frame, rclcpp::Time(), transform_tolerance_);
+      transform = buffer_->lookupTransform(target_frame, source_frame, clock_->now(), transform_tolerance_);
 
     } catch (tf2::TransformException & ex) {
       RCLCPP_ERROR(

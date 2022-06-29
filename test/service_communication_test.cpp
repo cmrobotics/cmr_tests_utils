@@ -6,15 +6,16 @@
 #include <example_interfaces/srv/add_two_ints.hpp>
 
 #include "cmr_tests_utils/basic_service_server_test.hpp"
-#include "cmr_tests_utils/basic_service_client_test.hpp"
 #include "cmr_tests_utils/single_thread_spinner.hpp"
+
+#include "cmr_clients_utils/basic_service_client.hpp"
 
 TEST(ServiceCommunication, service_communication)
 {
   rclcpp::init(0, nullptr);
 
   auto spinner = cmr_tests_utils::SingleThreadSpinner();
-  auto service_client = std::make_shared<cmr_tests_utils::BasicServiceClientTest<example_interfaces::srv::AddTwoInts>>(
+  auto service_client = std::make_shared<cmr_clients_utils::BasicServiceClient<example_interfaces::srv::AddTwoInts>>(
                           "service_client_test", "service"
                         );
   EXPECT_FALSE(service_client->is_server_ready());

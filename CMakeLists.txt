@@ -26,6 +26,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(cmr_clients_utils REQUIRED)
 
 
 include_directories(include
@@ -38,6 +39,7 @@ include_directories(include
   ${tf2_ros_INCLUDE_DIRS}
   ${tf2_INCLUDE_DIRS}
   ${tf2_geometry_msgs_INCLUDE_DIRS}
+  ${cmr_clients_utils_INCLUDE_DIRS}
 )
 
 set(LIBRARY_NAME "${PROJECT_NAME}_lib")
@@ -59,6 +61,7 @@ target_link_libraries(${LIBRARY_NAME} INTERFACE
   ${tf2_ros_LIBRARIES}
   ${tf2_geometry_msgs_LIBRARIES}
   ${tf2_LIBRARIES}
+  ${cmr_clients_utils_LIBRARIES}
 )
 
 install(TARGETS ${LIBRARY_NAME}
@@ -83,6 +86,7 @@ set(dependencies
   "tf2_ros"
   "tf2"
   "tf2_geometry_msgs"
+  "cmr_clients_utils"
 )
 
 if(BUILD_TESTING)

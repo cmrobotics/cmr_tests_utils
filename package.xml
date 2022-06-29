@@ -13,6 +13,7 @@
   <build_depend>tf2_ros</build_depend>
   <build_depend>tf2</build_depend>
   <build_depend>tf2_geometry_msgs</build_depend>
+  <build_depend>cmr_clients_utils</build_depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

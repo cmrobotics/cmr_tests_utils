@@ -6,15 +6,16 @@
 #include <example_interfaces/action/fibonacci.hpp>
 
 #include "cmr_tests_utils/basic_action_server_test.hpp"
-#include "cmr_tests_utils/basic_action_client_test.hpp"
 #include "cmr_tests_utils/single_thread_spinner.hpp"
+
+#include "cmr_clients_utils/basic_action_client.hpp"
 
 TEST(ServiceCommunication, action_communication)
 {
   rclcpp::init(0, nullptr);
 
   auto spinner = cmr_tests_utils::SingleThreadSpinner();
-  auto action_client = std::make_shared<cmr_tests_utils::BasicActionClientTest<example_interfaces::action::Fibonacci>>(
+  auto action_client = std::make_shared<cmr_clients_utils::BasicActionClient<example_interfaces::action::Fibonacci>>(
                           "action_client_test", "action"
                         );
   EXPECT_FALSE(action_client->is_server_ready());

@@ -1,3 +1,10 @@
+set(dependencies
+  ${dependencies}
+  "cmr_clients_utils"
+)
+
+find_package(cmr_clients_utils REQUIRED)
+
 set(TEST_NAME pub_sub_communication_test)
 ament_add_gtest(${TEST_NAME} ${TEST_NAME}.cpp)
 target_link_libraries(${TEST_NAME} ${LIBRARY_NAME})

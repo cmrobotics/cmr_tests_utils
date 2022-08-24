@@ -37,6 +37,7 @@ class BasicSubscriberNodeTest: public rclcpp::Node {
 
   ~BasicSubscriberNodeTest()
   {
+    is_program_running_.store(false);
     if (timestamp_check_thread_.joinable()) timestamp_check_thread_.join();
   }
 
@@ -116,7 +117,8 @@ class BasicSubscriberNodeTest: public rclcpp::Node {
   void update_liveness_() 
   {
     std::chrono::duration<double> elapsed_seconds;
-    while (true)
+    is_program_running_.store(true);
+    while (is_program_running_.load())
     {
       {
         std::lock_guard<std::mutex> lock(timestamp_mutex_);
@@ -150,6 +152,7 @@ class BasicSubscriberNodeTest: public rclcpp::Node {
 
   std::thread timestamp_check_thread_;
   
+  std::atomic<bool> is_program_running_;
   mutable std::mutex msg_mutex_;
   mutable std::mutex frequency_mutex_;
   mutable std::mutex topic_info_mutex_;

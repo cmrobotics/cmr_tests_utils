@@ -5,6 +5,8 @@
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 
+#include <nav_msgs/msg/odometry.hpp>
+
 #include "cmr_tests_utils/basic_tf_broadcaster_node_test.hpp"
 #include "cmr_tests_utils/basic_subscriber_node_test.hpp"
 
@@ -22,6 +24,7 @@ class SimulatedDifferentialRobot: public rclcpp::Node
     buffer_ = std::make_shared<tf2_ros::Buffer>(clock_);
     listener_ = std::make_shared<tf2_ros::TransformListener>(*buffer_);
     broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(this);
+    odom_pub_ = create_publisher<nav_msgs::msg::Odometry> ("odom", rclcpp::SystemDefaultsQoS());
     global_frame_ = global_frame;
     base_frame_ = base_frame;  
     velocity_timeout_sec_ = velocity_timeout_sec;
@@ -81,6 +84,7 @@ class SimulatedDifferentialRobot: public rclcpp::Node
   void broadcast_transform_() 
   {
     is_broadcasting_ = true;
+    nav_msgs::msg::Odometry odom_msg;
 
     if (last_received_vel_)
     {
@@ -103,6 +107,15 @@ class SimulatedDifferentialRobot: public rclcpp::Node
       transform_.transform.rotation = tf2::toMsg(quat);
     }
 
+    odom_msg.pose.pose.position.x = transform_.transform.translation.x;
+    odom_msg.pose.pose.position.y = transform_.transform.translation.y;
+    odom_msg.pose.pose.orientation.z = transform_.transform.rotation.z;
+    odom_msg.pose.pose.orientation.w = transform_.transform.rotation.w;
+    odom_msg.header.stamp = clock_->now();
+    odom_msg.header.frame_id = "odom";
+
+    odom_pub_->publish(odom_msg);
+
     transform_.header.stamp = clock_->now();
     broadcaster_->sendTransform(transform_);
   }  
@@ -120,6 +133,7 @@ class SimulatedDifferentialRobot: public rclcpp::Node
   std::shared_ptr<tf2_ros::Buffer> buffer_;
   std::shared_ptr<tf2_ros::TransformListener> listener_;
   std::shared_ptr<tf2_ros::TransformBroadcaster> broadcaster_;
+  std::shared_ptr<rclcpp::Publisher<nav_msgs::msg::Odometry>> odom_pub_;
   rclcpp::Clock::SharedPtr clock_;  
 
   // Subscription Utils

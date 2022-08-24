@@ -26,6 +26,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
 
 
 include_directories(include
@@ -38,6 +39,7 @@ include_directories(include
   ${tf2_ros_INCLUDE_DIRS}
   ${tf2_INCLUDE_DIRS}
   ${tf2_geometry_msgs_INCLUDE_DIRS}
+  ${nav_msgs_INCLUDE_DIRS}
 )
 
 set(LIBRARY_NAME "${PROJECT_NAME}_lib")
@@ -58,6 +60,7 @@ target_link_libraries(${LIBRARY_NAME} INTERFACE
   ${geometry_msgs_LIBRARIES}
   ${tf2_ros_LIBRARIES}
   ${tf2_geometry_msgs_LIBRARIES}
+  ${nav_msgs_LIBRARIES}
   ${tf2_LIBRARIES}
 )
 
@@ -83,6 +86,7 @@ set(dependencies
   "tf2_ros"
   "tf2"
   "tf2_geometry_msgs"
+  "nav_msgs"
 )
 
 if(BUILD_TESTING)

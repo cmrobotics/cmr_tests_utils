@@ -70,6 +70,7 @@ class SimulatedDifferentialRobot: public rclcpp::Node
   void reset_odometry()
   {
     last_received_vel_.reset();
+    last_yaw_ = 0.0;
     transform_.transform.translation.x = 0.0;
     transform_.transform.translation.y = 0.0;
     transform_.transform.translation.z = 0.0;

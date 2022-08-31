@@ -46,7 +46,7 @@ class MultiThreadSpinner
 
   bool add_node(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node, std::shared_ptr<SingleThreadSpinner> spinner = std::make_shared<SingleThreadSpinner>())
   {
-    if (this->spinners_.contains(std::string(node->get_name())))
+    if (this->spinners_.find(std::string(node->get_name())) != spinners_.end())
     {
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Node is already registered in a spinner");
       return false;
@@ -63,7 +63,7 @@ class MultiThreadSpinner
 
   bool remove_node(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
   {
-    if (!this->spinners_.contains(std::string(node->get_name())))
+    if (this->spinners_.find(std::string(node->get_name())) == spinners_.end())
     {
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Node was never registered in a spinner");
       return false;
@@ -93,7 +93,7 @@ class MultiThreadSpinner
 
   bool spin_some_node(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
   {
-    if (!this->spinners_.contains(std::string(node->get_name())))
+    if (this->spinners_.find(std::string(node->get_name())) == spinners_.end())
     {
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Node was never registered in a spinner, can't spin it");
       return false;
@@ -115,7 +115,7 @@ class MultiThreadSpinner
 
   bool cancel_spin_node(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
   {
-    if (!this->spinners_.contains(std::string(node->get_name())))
+    if (this->spinners_.find(std::string(node->get_name())) == spinners_.end())
     {
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Node was never registered in a spinner, can't spin it");
       return false;
@@ -137,7 +137,7 @@ class MultiThreadSpinner
 
   bool is_node_spinning(rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node)
   {
-    if (!this->spinners_.contains(std::string(node->get_name())))
+    if (this->spinners_.find(std::string(node->get_name())) == spinners_.end())
     {
       RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "Node was never registered in a spinner!");
       return false;

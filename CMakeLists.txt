@@ -21,7 +21,6 @@ find_package(rclcpp_lifecycle REQUIRED)
 find_package(lifecycle_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
-find_package(example_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2 REQUIRED)
@@ -34,7 +33,6 @@ include_directories(include
   ${lifecycle_msgs_INCLUDE_DIRS}
   ${rclcpp_INCLUDE_DIRS}
   ${rclcpp_action_INCLUDE_DIRS}
-  ${example_interfaces_INCLUDE_DIRS}
   ${geometry_msgs_INCLUDE_DIRS}
   ${tf2_ros_INCLUDE_DIRS}
   ${tf2_INCLUDE_DIRS}
@@ -56,7 +54,6 @@ target_link_libraries(${LIBRARY_NAME} INTERFACE
   ${lifecycle_msgs_LIBRARIES}
   ${rclcpp_LIBRARIES}
   ${rclcpp_action_LIBRARIES}
-  ${example_interfaces_LIBRARIES}
   ${geometry_msgs_LIBRARIES}
   ${tf2_ros_LIBRARIES}
   ${tf2_geometry_msgs_LIBRARIES}
@@ -81,7 +78,6 @@ set(dependencies
   "lifecycle_msgs"
   "rclcpp"
   "rclcpp_action"
-  "example_interfaces"
   "geometry_msgs"
   "tf2_ros"
   "tf2"
@@ -92,6 +88,7 @@ set(dependencies
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   find_package(ament_cmake_pytest REQUIRED)
+  find_package(example_interfaces REQUIRED)
   add_subdirectory(test)
 endif()
 

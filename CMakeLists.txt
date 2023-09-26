@@ -27,6 +27,17 @@ find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 
+set(dependencies
+  "rclcpp_lifecycle"
+  "lifecycle_msgs"
+  "rclcpp"
+  "rclcpp_action"
+  "geometry_msgs"
+  "tf2_ros"
+  "tf2"
+  "tf2_geometry_msgs"
+  "nav_msgs"
+)
 
 include_directories(include)
 
@@ -40,15 +51,7 @@ target_include_directories(${LIBRARY_NAME} INTERFACE
 )
 
 ament_target_dependencies(${LIBRARY_NAME} INTERFACE
-  rclcpp_lifecycle
-  lifecycle_msgs
-  rclcpp
-  rclcpp_action
-  geometry_msgs
-  tf2_ros
-  tf2_geometry_msgs
-  nav_msgs
-  tf2
+  ${dependencies}
 )
 
 install(TARGETS ${LIBRARY_NAME}
@@ -61,18 +64,6 @@ install(TARGETS ${LIBRARY_NAME}
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
-)
-
-set(dependencies
-  "rclcpp_lifecycle"
-  "lifecycle_msgs"
-  "rclcpp"
-  "rclcpp_action"
-  "geometry_msgs"
-  "tf2_ros"
-  "tf2"
-  "tf2_geometry_msgs"
-  "nav_msgs"
 )
 
 if(BUILD_TESTING)

@@ -28,17 +28,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 
 
-include_directories(include
-  ${rclcpp_lifecycle_INCLUDE_DIRS}
-  ${lifecycle_msgs_INCLUDE_DIRS}
-  ${rclcpp_INCLUDE_DIRS}
-  ${rclcpp_action_INCLUDE_DIRS}
-  ${geometry_msgs_INCLUDE_DIRS}
-  ${tf2_ros_INCLUDE_DIRS}
-  ${tf2_INCLUDE_DIRS}
-  ${tf2_geometry_msgs_INCLUDE_DIRS}
-  ${nav_msgs_INCLUDE_DIRS}
-)
+include_directories(include)
 
 set(LIBRARY_NAME "${PROJECT_NAME}_lib")
 
@@ -49,16 +39,16 @@ target_include_directories(${LIBRARY_NAME} INTERFACE
   $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(${LIBRARY_NAME} INTERFACE
-  ${rclcpp_lifecycle_LIBRARIES}
-  ${lifecycle_msgs_LIBRARIES}
-  ${rclcpp_LIBRARIES}
-  ${rclcpp_action_LIBRARIES}
-  ${geometry_msgs_LIBRARIES}
-  ${tf2_ros_LIBRARIES}
-  ${tf2_geometry_msgs_LIBRARIES}
-  ${nav_msgs_LIBRARIES}
-  ${tf2_LIBRARIES}
+ament_target_dependencies(${LIBRARY_NAME} INTERFACE
+  rclcpp_lifecycle
+  lifecycle_msgs
+  rclcpp
+  rclcpp_action
+  geometry_msgs
+  tf2_ros
+  tf2_geometry_msgs
+  nav_msgs
+  tf2
 )
 
 install(TARGETS ${LIBRARY_NAME}

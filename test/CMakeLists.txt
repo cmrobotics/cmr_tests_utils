@@ -1,6 +1,7 @@
 set(dependencies
   ${dependencies}
   "cmr_clients_utils"
+  "example_interfaces"
 )
 
 find_package(cmr_clients_utils REQUIRED)

@@ -18,7 +18,6 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
-find_package(lifecycle_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -29,7 +28,6 @@ find_package(nav_msgs REQUIRED)
 
 set(dependencies
   "rclcpp_lifecycle"
-  "lifecycle_msgs"
   "rclcpp"
   "rclcpp_action"
   "geometry_msgs"

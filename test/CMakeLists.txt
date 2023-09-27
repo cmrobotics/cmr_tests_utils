@@ -1,5 +1,4 @@
 set(dependencies
-  ${dependencies}
   "cmr_clients_utils"
   "example_interfaces"
 )

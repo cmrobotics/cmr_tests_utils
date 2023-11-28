@@ -2,8 +2,8 @@
 Changelog for package cmr_tests_utils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2023-11-28)
+------------------
 * Initial release
 * Contributors: Aaron, Arkadiusz Nowakowski, Clara Dieudonné, Erwin Lejeune, Soma Gallai
 

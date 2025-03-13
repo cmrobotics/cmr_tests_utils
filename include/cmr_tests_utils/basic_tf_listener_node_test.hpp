@@ -35,7 +35,7 @@ class BasicTfListenerNodeTest: public rclcpp::Node {
     }
 
     try {
-      if (!buffer_->canTransform(target_frame, in_pose.header.frame_id, clock_->now(), transform_tolerance_)) {
+      if (!buffer_->canTransform(target_frame, in_pose.header.frame_id, rclcpp::Time(0) , transform_tolerance_)) {
         RCLCPP_ERROR(get_logger(), "Transform between %s and %s was not available", in_pose.header.frame_id.c_str(), target_frame.c_str());
         return false;
       } 
@@ -58,12 +58,12 @@ class BasicTfListenerNodeTest: public rclcpp::Node {
   bool lookup_transform(geometry_msgs::msg::TransformStamped & transform, std::string target_frame, std::string source_frame) const
   {
     try {
-      if (!buffer_->canTransform(target_frame, source_frame, clock_->now(), transform_tolerance_)) {
+      if (!buffer_->canTransform(target_frame, source_frame, rclcpp::Time(0), transform_tolerance_)) {
         RCLCPP_ERROR(get_logger(), "Transform between %s and %s was not available", source_frame.c_str(), target_frame.c_str());
         return false;
       } 
       
-      transform = buffer_->lookupTransform(target_frame, source_frame, clock_->now(), transform_tolerance_);
+      transform = buffer_->lookupTransform(target_frame, source_frame, rclcpp::Time(0), transform_tolerance_);
 
     } catch (tf2::TransformException & ex) {
       RCLCPP_ERROR(

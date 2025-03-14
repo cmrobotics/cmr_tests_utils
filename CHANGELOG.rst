@@ -2,8 +2,8 @@
 Changelog for package cmr_tests_utils
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.1 (2025-03-14)
+------------------
 * Merge pull request `#17 <https://github.com/cmrobotics/cmr_tests_utils/issues/17>`_ from cmrobotics/fix-unit-tests
   fix: unit  tests - always lookup latest available transform
 * fix: unit  tests - always lookup latest available transform
